@@ -1,10 +1,12 @@
 import { Text, View } from "react-native";
+import {FONTS} from './utils/theme.js'
+import globalStyles from './utils/globalStyles.js'
 
 export default function Index() {
   return (
-    <View>
+    <View style={globalStyles.container}>
 
-      <Text>Hello World!</Text>
+      <Text style={FONTS.title}>Hello World!</Text>
       
     </View>
   );

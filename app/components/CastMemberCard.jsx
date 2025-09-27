@@ -1,4 +1,4 @@
-export default function DetailScreen(){
+export default function CastMemberCard(){
 
     return(
         <>

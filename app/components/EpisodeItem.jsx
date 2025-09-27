@@ -1,4 +1,4 @@
-export default function DetailScreen(){
+export default function EpisodeItem(){
 
     return(
         <>
