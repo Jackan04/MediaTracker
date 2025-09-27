@@ -1,7 +1,7 @@
 import { useFonts } from 'expo-font';
 import { Stack } from "expo-router";
 
-export default function RootLayout() {
+ function RootLayout() {
    const [loaded] = useFonts({
     'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
     'Roboto-Medium': require('../assets/fonts/Roboto-Medium.ttf'),

@@ -1,14 +1,29 @@
 import { Text, View } from "react-native";
-import {FONTS} from '../utils/theme.js'
+import { useState, useEffect } from "react";
 import globalStyles from '../utils/globalStyles.js'
 import { SafeAreaView } from "react-native-safe-area-context";
+import { initDb, insertItem } from "../server/db.js";
 
 export default function Index() {
-  return (
-    <SafeAreaView style={globalStyles.container}>
+   useEffect(() => {
+      const loadData = async () => {
+          try {
+            await initDb()
+            
+          } catch (error) {
+            console.error('Error initializing database:', error)
+          }
+        };
+        loadData();
+   })
 
-      <Text style={FONTS.title}>Hello World!</Text>
-      
+  return (
+    <View style={globalStyles.container}>
+      <SafeAreaView >
+        <Text style={globalStyles.title}>Title!</Text>
+        <Text style={globalStyles.heading}>Heading!</Text>
     </SafeAreaView>
+    </View>
+  
   );
 }

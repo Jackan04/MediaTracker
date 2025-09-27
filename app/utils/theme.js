@@ -26,27 +26,10 @@ export const FONT_SIZES = {
 }
 
 export const SIZES = {
+  radius: 10,
   xs: 8, 
   sm: 12, 
   md: 16, 
   lg: 24, 
-  xl: 32
-
+  xl: 32,
 }
-
-export const FONTS = {
-  title: {
-    fontFamily: 'Roboto-Bold',
-    fontWeight: '500',
-    fontSize: FONT_SIZES.xxl,
-    color: COLORS.textPrimary,
-  },
-  heading:{
-    fontFamily: 'Roboto-Medium',
-    fontWeight: '500',
-    fontSize: FONT_SIZES.lg,
-    color: COLORS.textHeading,
-  },
-  
-  body:  { fontFamily: 'Roboto-Regular', fontSize: FONT_SIZES.md, color: COLORS.textPrimary },
-};
