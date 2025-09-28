@@ -5,6 +5,7 @@ import { getTrendingMovies, getTrendingShows } from "../api/tmdb.js";
 import { SIZES, COLORS } from "../utils/theme.js";
 import Header from "../components/Header.jsx";
 import Button from "../components/Button/Button.jsx";
+import MetaInfoRow from "../components/MetaInfoRow.jsx";
 import { initDb } from "../server/db.js";
 import globalStyles from '../utils/globalStyles.js';
 
@@ -65,6 +66,7 @@ export default function Index() {
               <Text key={show.id}>{show.name}</Text>
             ))}
           </View>
+          <MetaInfoRow year="2025" runtime="2h" genre="Action" rating="4"></MetaInfoRow>
    
         </ScrollView>
       </SafeAreaView>
