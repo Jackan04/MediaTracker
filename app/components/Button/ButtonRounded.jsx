@@ -1,4 +1,4 @@
-export default function ButtonSmall(){
+export default function ButtonRounded(){
 
     return(
         <>
