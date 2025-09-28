@@ -5,22 +5,21 @@ const globalStyles = StyleSheet.create({
     
     container: {
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
         backgroundColor: COLORS.background,
+
     },
     title:{
-        fontFamily: 'Roboto-Bold',
+        fontWeight: 600,
         fontSize: FONT_SIZES.xxl,
         color: COLORS.textPrimary,
     },
     heading:{
-        fontFamily: 'Roboto-Medium',
+        fontWeight: 500,
         fontSize: FONT_SIZES.lg,
         color: COLORS.textHeading,
     },
     bodyText:{
-        fontFamily: 'Roboto-Regular',
+        fontWeight: 400,
         fontSize: FONT_SIZES.md, 
         color: COLORS.textPrimary,
     }

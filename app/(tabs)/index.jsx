@@ -1,8 +1,9 @@
-import { Text, View } from "react-native";
-import { useState, useEffect } from "react";
-import globalStyles from '../utils/globalStyles.js'
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { initDb} from "../server/db.js";
+import { useEffect } from "react";
+import globalStyles from '../utils/globalStyles.js';
+import { initDb } from "../server/db.js";
+import Header from "../components/Header.jsx";
 
 export default function Index() {
    useEffect(() => {
@@ -14,15 +15,25 @@ export default function Index() {
           }
         };
         loadData();
-   })
+   }, [])
 
   return (
     <View style={globalStyles.container}>
-      <SafeAreaView >
-        <Text style={globalStyles.title}>Title!</Text>
-        <Text style={globalStyles.heading}>Heading!</Text>
-    </SafeAreaView>
+      <Header title="Home"/>        
+      <SafeAreaView style={globalStyles.container}>
+        <ScrollView>
+          <View>
+            <Text style={globalStyles.heading}>Trending Movies</Text>
+          </View>
+            <View>
+            <Text style={globalStyles.heading}>Trending Shows</Text>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     </View>
-  
   );
 }
+
+const styles = StyleSheet.create({
+
+})
