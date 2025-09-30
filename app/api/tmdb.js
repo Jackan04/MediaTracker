@@ -1,4 +1,5 @@
 import { mapDetails, mapPreview } from "./mappers";
+
 const options = {
   method: "GET",
   headers: {
@@ -12,7 +13,10 @@ export async function searchMovies(query){
     try{
         const response = await fetch(`https://api.themoviedb.org/3/search/movie?query=${query}`, options)
         const json = await response.json()   
-        return json
+
+        const movieResults = json.map(movie => mapPreview(movie, 'movie')) // Map each item from the search results to get only the necessary fields
+
+        return movieResults
     }
     catch(error){
         console.error(`Error: ${error.message}`)
@@ -24,7 +28,10 @@ export async function searchShows(query){
     try{
         const response = await fetch(`https://api.themoviedb.org/3/search/tv?query=${query}`, options)
         const json = await response.json()
-        return json
+        
+        const showResults = json.map(show => mapPreview(show, 'show')) // Map each item from the search results to get only the necessary fields
+
+        return showResults
     }
     catch(error){
         console.error(`Error: ${error.message}`)
