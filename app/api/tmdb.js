@@ -6,8 +6,8 @@ const options = {
   },
 };
 
-// Function to extract only the fields that the database needs
-// Makes it possible to send an item object instead of all the parameters individually
+// Function to extract only the necessary fields for the database.
+// Enables sending an item object instead of providing all parameters individually.
 function mapTmdbToItem(tmdb, mediaType) {
   const isMovie = mediaType === 'movie';
   

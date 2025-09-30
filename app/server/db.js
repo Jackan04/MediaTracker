@@ -17,7 +17,7 @@ const initDb = async () => {
     try{
         const db = await getDb()
         console.log(`Database open`);
-        // Help with ChatGPT for generating this SQLite schema
+        // Assistance from ChatGPT in generating this SQLite schema
         await db.execAsync(`
         PRAGMA journal_mode = WAL;
         CREATE TABLE IF NOT EXISTS items (
