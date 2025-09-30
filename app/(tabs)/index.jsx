@@ -4,8 +4,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { getTrendingMovies, getTrendingShows } from "../api/tmdb.js";
 import { SIZES, COLORS } from "../utils/theme.js";
 import Header from "../components/Header.jsx";
-import Button from "../components/Button/Button.jsx";
 import MetaInfoRow from "../components/MetaInfoRow.jsx";
+import Button from "../components/Button/Button.jsx";
 import { initDb } from "../server/db.js";
 import globalStyles from '../utils/globalStyles.js';
 
@@ -50,9 +50,9 @@ export default function Index() {
    }, [])
 
   return (
-    <View style={globalStyles.container}>
+    <View style={styles.container}>
       <Header title="Home"/>        
-      <SafeAreaView style={globalStyles.container}>
+      <SafeAreaView style={styles.container}>
         <ScrollView>
           <View>
             <Text style={globalStyles.heading}>Trending Movies</Text>
@@ -66,7 +66,11 @@ export default function Index() {
               <Text key={show.id}>{show.name}</Text>
             ))}
           </View>
-          <MetaInfoRow year="2025" runtime="2h" genre="Action" rating="4"></MetaInfoRow>
+          
+          {/* Testing */}
+          <MetaInfoRow year="2025" runtime="2h" genre="Action" rating="4"></MetaInfoRow>   
+          <Button text="Button" buttonBgColor={COLORS.blueLight} buttonTextColor={COLORS.blueDark}></Button>
+          <Button text="Button" buttonBgColor={COLORS.greenLight} buttonTextColor={COLORS.greenDark}></Button>
    
         </ScrollView>
       </SafeAreaView>
@@ -75,5 +79,10 @@ export default function Index() {
 }
 
 const styles = StyleSheet.create({
-
+      container:{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "space-between",
+          backgroundColor: COLORS.background,
+      }
 })

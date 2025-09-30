@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
     button:{
         justifyContent: "center",
         alignItems: "center",
-        paddingHorizontal: 16,
         paddingVertical: 12,
         borderRadius: SIZES.radius,
         // background color and text color are set dynamically with props
