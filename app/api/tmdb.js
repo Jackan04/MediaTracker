@@ -44,7 +44,10 @@ export async function getTrendingMovies(){
     try{
         const response = await fetch(`https://api.themoviedb.org/3/trending/movie/day`, options)
         const json = await response.json()
-        return json
+
+        const trendingMovies = json.map(movie => mapPreview(movie, 'movie'))
+
+        return trendingMovies
     }
     catch(error){
         console.error(`Error: ${error.message}`)
@@ -57,7 +60,10 @@ export async function getTrendingShows(){
     try{
         const response = await fetch(`https://api.themoviedb.org/3/trending/tv/day`, options)
         const json = await response.json()
-        return json
+
+        const trendingShows = json.map(show => mapPreview(show, 'show'))
+        
+        return trendingShows 
     }
     catch(error){
         console.error(`Error: ${error.message}`)
