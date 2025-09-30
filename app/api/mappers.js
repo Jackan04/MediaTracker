@@ -1,5 +1,7 @@
-// Function to extract only the necessary fields for the database and to display the details page
-// Enables sending an item object instead of providing all parameters individually.
+// TMDB API response mappers: 
+// mapDetails() for database storage and detail pages 
+// mapPreview() for all the card components
+
 export function mapDetails(tmdb, mediaType) {
   const isMovie = mediaType === 'movie';
   
@@ -25,7 +27,6 @@ export function mapDetails(tmdb, mediaType) {
   };
 }
 
-// Function to extract only the fields required for displaying the preview cards
 export function mapPreview(tmdb, mediaType){
     const isMovie = mediaType === "movie"
 
