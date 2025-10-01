@@ -31,7 +31,7 @@ export function mapDetails(tmdb, mediaType) {
 
 export function mapPreview(tmdb, mediaType){
     const isMovie = mediaType === "movie"
-    const posterBaseUrl = "https://image.tmdb.org/t/p/w185";
+    const posterBaseUrl = "https://image.tmdb.org/t/p/w342";
 
     return {
         tmdb_id: tmdb.id,

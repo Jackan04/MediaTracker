@@ -27,6 +27,7 @@ export const FONT_SIZES = {
 
 export const SIZES = {
   radius: 8,  
+  xxs: 4,
   xs: 8,      
   sm: 16,     
   md: 24,     
