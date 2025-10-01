@@ -20,9 +20,11 @@ const insertItem =  async (item) => {
             saved,
             pinned,
             watched,
-            created_at,
+            created_at
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(tmdb_id, media_type)
+        DO UPDATE SET saved = 1;`,
         [
             item.tmdb_id,
             item.media_type,
@@ -47,19 +49,33 @@ const insertItem =  async (item) => {
 
 const listItemsByMediaType = async (mediaType) => {
     const db = await getDb()
+    const allRows = await db.getAllAsync(`SELECT * FROM items WHERE media_type = ? ORDER BY created_at DESC`, [mediaType])
+    return allRows
 }
 
 const deleteItem = async (id) => {
     const db = await getDb()
+    await db.runAsync('DELETE FROM items WHERE id = ?', [id])
+}
+
+const togglePinned = async (id, isPinned) => {
+    const db = await getDb()
+    
+    if(!isPinned){
+        await db.runAsync('UPDATE items SET pinned = ? WHERE id = ?', [1, id]);    
+    }
+    else {
+        await db.runAsync('UPDATE items SET pinned = ? WHERE id = ?', [0, id]);
+    }
 
 }
 
-const togglePinned = async (id) => {
+const toggleWatched = async (id, isWatched) => {
     const db = await getDb()
-
-}
-
-const toggleWatched = async (id) => {
-    const db = await getDb()
-
+    if(!isWatched){
+        await db.runAsync('UPDATE items SET watched = ? WHERE id = ?', [1, id]);
+    }else {
+        await db.runAsync('UPDATE items SET watched = ? WHERE id = ?', [0, id]);
+    }
+    
 }
