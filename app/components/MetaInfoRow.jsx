@@ -1,6 +1,6 @@
-import { Ionicons } from '@expo/vector-icons'
 import { StyleSheet, Text, View } from "react-native"
-import { SIZES,COLORS, FONT_SIZES } from "../utils/theme"
+import { Ionicons } from '@expo/vector-icons'
+import { COLORS, FONT_SIZES, SIZES } from "../utils/theme"
 
 
 export default function MetaInfoRow(props){
@@ -12,7 +12,7 @@ export default function MetaInfoRow(props){
         <Text style={styles.text}>{props.genre}</Text>
         <View style={styles.ratingContainer}>
             <Text style={styles.text}>{props.rating}</Text>
-            <Ionicons name="star" size={16} color={COLORS.yellowDark} />
+            <Ionicons name="star" size={SIZES.sm} color={COLORS.yellowDark}></Ionicons>
         </View>
        </View>
     )
@@ -39,5 +39,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         gap: 4,
-    }
+    },
+
 })
