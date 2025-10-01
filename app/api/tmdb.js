@@ -14,7 +14,7 @@ export async function searchMovies(query){
         const response = await fetch(`https://api.themoviedb.org/3/search/movie?query=${query}`, options)
         const json = await response.json()   
 
-        const movieResults = json.map(movie => mapPreview(movie, 'movie')) // Map each item from the search results to get only the necessary fields
+        const movieResults = json.map(movie => mapSearchResults(movie, 'movie')) // Map each item from the search results to get only the necessary fields
 
         return movieResults
     }
@@ -29,7 +29,7 @@ export async function searchShows(query){
         const response = await fetch(`https://api.themoviedb.org/3/search/tv?query=${query}`, options)
         const json = await response.json()
         
-        const showResults = json.map(show => mapPreview(show, 'show')) // Map each item from the search results to get only the necessary fields
+        const showResults = json.map(show => mapSearchResults(show, 'show')) // Map each item from the search results to get only the necessary fields
 
         return showResults
     }
@@ -74,7 +74,6 @@ export async function getTrendingShows(){
 export async function getMovieDetails(id){
 
     try{
-        // TODO: Figure out how to access the backdrop and poser paths
         const response = await fetch(`https://api.themoviedb.org/3/movie/${id}`, options)
         const json = await response.json()
         const movie = mapDetails(json, 'movie')
@@ -90,7 +89,6 @@ export async function getMovieDetails(id){
 export async function getShowDetails(id){
 
     try{
-        // TODO: Figure out how to access the backdrop and poser paths
         const response = await fetch(`https://api.themoviedb.org/3/tv/${id}`, options)
         const json = await response.json()
         const show = mapDetails(json, 'show')
