@@ -1,6 +1,6 @@
 const insertItem =  async (item) => {
     const db = await getDb()
-    const now = Date.now();
+    const now = Date.now()
 
     await db.runAsync(`
         INSERT INTO items (
@@ -44,38 +44,52 @@ const insertItem =  async (item) => {
             0, // watched toggle
             now, // created_at
         ]
-    );
+    )
+    
+    // Indexes for better performance
+    await db.execAsync(`CREATE INDEX IF NOT EXISTS idx_items_media_type ON items(media_type);`)
+    await db.execAsync(`CREATE INDEX IF NOT EXISTS idx_items_created_at ON items(created_at DESC);`)
 }
 
 const listItemsByMediaType = async (mediaType) => {
+    if(!mediaType) throw new Error("mediaType is required ('movie' or 'tv')")
     const db = await getDb()
+    
     const allRows = await db.getAllAsync(`SELECT * FROM items WHERE media_type = ? ORDER BY created_at DESC`, [mediaType])
     return allRows
 }
 
 const deleteItem = async (id) => {
+    if(!id) throw new Error("id is required")
     const db = await getDb()
-    await db.runAsync('DELETE FROM items WHERE id = ?', [id])
+    try{
+        await db.runAsync('DELETE FROM items WHERE id = ?', [id])
+    }
+    catch(error){
+        console.error("Database delete failed:", error);
+        throw error;
+    }
 }
 
 const togglePinned = async (id, isPinned) => {
+    if(!id) throw new Error("id is required")
     const db = await getDb()
-    
     if(!isPinned){
-        await db.runAsync('UPDATE items SET pinned = ? WHERE id = ?', [1, id]);    
+        await db.runAsync('UPDATE items SET pinned = ? WHERE id = ?', [1, id]) 
     }
     else {
-        await db.runAsync('UPDATE items SET pinned = ? WHERE id = ?', [0, id]);
+        await db.runAsync('UPDATE items SET pinned = ? WHERE id = ?', [0, id])
     }
 
 }
 
 const toggleWatched = async (id, isWatched) => {
+    if(!id) throw new Error("id is required")
     const db = await getDb()
     if(!isWatched){
-        await db.runAsync('UPDATE items SET watched = ? WHERE id = ?', [1, id]);
+        await db.runAsync('UPDATE items SET watched = ? WHERE id = ?', [1, id])
     }else {
-        await db.runAsync('UPDATE items SET watched = ? WHERE id = ?', [0, id]);
+        await db.runAsync('UPDATE items SET watched = ? WHERE id = ?', [0, id])
     }
     
 }

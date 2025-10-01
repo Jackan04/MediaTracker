@@ -5,11 +5,17 @@ const DATABASE_NAME = "db.db"
 let dbInstance = null
 
 const getDb = async () => {
-  if(!dbInstance){
-    dbInstance = await SQLite.openDatabaseAsync(DATABASE_NAME);
+  try {
+    if (!dbInstance) {
+      dbInstance = await SQLite.openDatabaseAsync(DATABASE_NAME);
+    }
+    return dbInstance;
+  } catch (error) {
+    console.error("Error retrieving the database:", error);
+    throw error;
   }
-  return dbInstance
-}
+};
+
 
 // Initialazation of. database on launch
 const initDb = async () => { 
