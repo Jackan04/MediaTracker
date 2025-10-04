@@ -14,7 +14,7 @@ export async function searchMovies(query){
         const response = await fetch(`https://api.themoviedb.org/3/search/movie?query=${query}`, options)
         const json = await response.json()   
 
-        const movieResults = json.map(movie => mapSearchResults(movie, 'movie')) // Map each item from the search results to get only the necessary fields
+        const movieResults = json.results.map(movie => mapPreview(movie, 'movie')) // Map each item from the search results to get only the necessary fields
 
         return movieResults
     }
@@ -29,7 +29,7 @@ export async function searchShows(query){
         const response = await fetch(`https://api.themoviedb.org/3/search/tv?query=${query}`, options)
         const json = await response.json()
         
-        const showResults = json.map(show => mapSearchResults(show, 'tv')) // Map each item from the search results to get only the necessary fields
+        const showResults = json.results.map(show => mapPreview(show, 'tv')) // Map each item from the search results to get only the necessary fields
 
         return showResults
     }
@@ -44,8 +44,8 @@ export async function getTrendingMovies(){
     try{
         const response = await fetch(`https://api.themoviedb.org/3/trending/movie/day`, options)
         const json = await response.json()
-
-        const trendingMovies = json.map(movie => mapPreview(movie, 'movie'))
+        
+        const trendingMovies = json.results.map(movie => mapPreview(movie, 'movie')) // Map each item from the trending movies to get only the necessary fields
 
         return trendingMovies
     }
@@ -60,8 +60,7 @@ export async function getTrendingShows(){
     try{
         const response = await fetch(`https://api.themoviedb.org/3/trending/tv/day`, options)
         const json = await response.json()
-
-        const trendingShows = json.map(show => mapPreview(show, 'tv'))
+        const trendingShows = json.results.map(show => mapPreview(show, 'tv')) // Map each item from the trending shows to get only the necessary fields
         
         return trendingShows 
     }
