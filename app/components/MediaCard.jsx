@@ -14,7 +14,7 @@ export default function MediaCard(props){
                 contentFit="cover"
             />
             <View style={styles.texts}>
-                <Text style={styles.title}>{props.title}</Text>
+                <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">{props.title}</Text>
                 <Text style={styles.year}>{props.year}</Text>
             </View>
         </Pressable>

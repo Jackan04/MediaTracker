@@ -49,6 +49,7 @@ export default function WatchList(props){
             data={watchList}
             numColumns={3}
             columnWrapperStyle={styles.row}
+            ItemSeparatorComponent={() => <View style={{ height: SIZES.sm }} />}
             renderItem={({item}) => (
                 <MediaCard 
                     posterUrl={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
