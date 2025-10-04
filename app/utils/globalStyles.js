@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native"
-import {COLORS, FONT_SIZES, SIZES} from '../utils/theme.js'
+import { COLORS, FONT_SIZES, SIZES } from '../utils/theme.js'
 
 const globalStyles = StyleSheet.create({
     

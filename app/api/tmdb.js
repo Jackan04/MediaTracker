@@ -8,12 +8,13 @@ const options = {
   },
 };
 
-// Filtered Search
+// Filtered Search by predefined media type
 export async function searchByMediaType(mediaType, query){
     const isMovie = mediaType === "movie"
 
+    const cleanQuery = query.trim().toLowerCase()
     try{
-        const response = await fetch(`https://api.themoviedb.org/3/search/${mediaType}?query=${query}`, options)
+        const response = await fetch(`https://api.themoviedb.org/3/search/${mediaType}?query=${cleanQuery}`, options)
         const json = await response.json()   
 
         const searchResults = json.results.map(result => mapSearchResults(result, isMovie ? "movie" : "tv")) // Map each item from the search results to get only the necessary fields
@@ -27,9 +28,10 @@ export async function searchByMediaType(mediaType, query){
 
 // General Search (both movies and shows)
 export async function searchMedia(query){
+    const cleanQuery = query.trim().toLowerCase()
 
     try{
-        const response = await fetch(`https://api.themoviedb.org/3/search/multi?query=${query}`, options)
+        const response = await fetch(`https://api.themoviedb.org/3/search/multi?query=${cleanQuery}`, options)
         const json = await response.json()   
 
         // Filter out people from the search result

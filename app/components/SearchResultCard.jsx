@@ -30,14 +30,11 @@ const styles = StyleSheet.create({
         width: "100%",
         justifyContent: "space-between",
         flexDirection:"row",
+        paddingVertical: SIZES.xs,
         alignItems: "center",
-        paddingHorizontal: SIZES.md,
-        paddingVertical: SIZES.lg,
-        borderRadius: SIZES.radius,
-        gap: SIZES.xxs,
     },
     poster:{
-        width: 50,
+        width: 60,
         height: 74,
         borderRadius: SIZES.radius,
     },
@@ -47,15 +44,12 @@ const styles = StyleSheet.create({
         maxWidth: 180, 
     },
     title:{
-        fontSize: FONT_SIZES.sm,
+        fontSize: FONT_SIZES.md,
         color: COLORS.textPrimary,
-        
-
     },
     year:{
         fontSize: FONT_SIZES.sm,
         color: COLORS.subText,
-
     },
     mediaType:{
         fontSize: FONT_SIZES.sm,
