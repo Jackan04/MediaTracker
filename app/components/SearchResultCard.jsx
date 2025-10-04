@@ -1,12 +1,12 @@
 import { Image } from "expo-image";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Pressable } from "react-native";
 import { COLORS, FONT_SIZES, SIZES } from "../utils/theme";
 import ButtonRounded from './Button/ButtonRounded';
 
 export default function SearchResultCard(props){
 
     return(
-        <View style={styles.container}>
+        <Pressable style={styles.container}>
             <View style={styles.leftContent}>
                 <Image 
                 source={{ uri: props.posterUrl }} 
@@ -21,7 +21,7 @@ export default function SearchResultCard(props){
             </View>
         </View>
             <ButtonRounded></ButtonRounded>
-        </View>
+        </Pressable>
     )
 }
 
