@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text } from "react-native"
-import { SIZES, COLORS } from "../../utils/theme"
+import { COLORS, SIZES } from "../../utils/theme"
 
 export default function Button(props){
 
@@ -16,8 +16,10 @@ const styles = StyleSheet.create({
     button:{
         justifyContent: "center",
         alignItems: "center",
-        paddingVertical: 12,
+        paddingVertical: SIZES.buttonVertical,
+        paddingHorizontal: SIZES.buttonHorizontal, 
         borderRadius: SIZES.radius,
+        alignSelf: "flex-start",
         // background color and text color are set dynamically with props
     },
     buttonText:{

@@ -1,12 +1,14 @@
 import { Image } from "expo-image";
 import { StyleSheet, Text, View } from "react-native";
-import { SIZES, COLORS, FONT_SIZES } from "../utils/theme";
+import { COLORS, FONT_SIZES, SIZES } from "../utils/theme";
+import ButtonRounded from './Button/ButtonRounded';
 
-export default function SearchResultCard(){
+export default function SearchResultCard(props){
 
     return(
-         <View style={styles.container}>
-            <Image 
+        <View style={styles.container}>
+            <View style={styles.leftContent}>
+                <Image 
                 source={{ uri: props.posterUrl }} 
                 style={styles.poster}
                 placeholder="https://via.placeholder.com/120x180?text=No+Image"
@@ -18,19 +20,25 @@ export default function SearchResultCard(){
                 <Text style={styles.mediaType}>{props.mediaType}</Text>
             </View>
         </View>
+            <ButtonRounded></ButtonRounded>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
      container: {
-        width: 105,
-        height: 155,
+        width: "100%",
+        justifyContent: "space-between",
+        flexDirection:"row",
+        alignItems: "center",
+        paddingHorizontal: SIZES.md,
+        paddingVertical: SIZES.lg,
         borderRadius: SIZES.radius,
         gap: SIZES.xxs,
     },
     poster:{
-        width: 105,
-        height: 155,
+        width: 50,
+        height: 74,
         borderRadius: SIZES.radius,
     },
     texts:{
@@ -48,6 +56,12 @@ const styles = StyleSheet.create({
 
     },
     mediaType:{
-        
+        fontSize: FONT_SIZES.sm,
+        color: COLORS.subText,
+    },
+    leftContent:{
+        flexDirection:"row",
+        gap: SIZES.sm,
+        alignItems: "center",
     }
 })

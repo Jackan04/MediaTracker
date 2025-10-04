@@ -4,12 +4,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { getTrendingMovies, getTrendingShows } from "../api/tmdb.js";
 import { SIZES, COLORS } from "../utils/theme.js";
 import Header from "../components/Header.jsx";
-import MetaInfoRow from "../components/MetaInfoRow.jsx";
-import MediaCard from "../components/MediaCard.jsx";
-import ButtonRounded from "../components/Button/ButtonRounded.jsx";
-import Button from "../components/Button/Button.jsx";
 import { initDb } from "../server/db.js";
 import globalStyles from '../utils/globalStyles.js';
+
+import MetaInfoRow from "../components/MetaInfoRow.jsx";
+import MediaCard from "../components/MediaCard.jsx";
+import SearchResultCard from "../components/SearchResultCard.jsx";
+import Button from "../components/Button/Button.jsx";
 
 export default function Index() {
 
@@ -70,13 +71,20 @@ export default function Index() {
           </View>
           
           {/* Testing */}
-          <MetaInfoRow year="2025" runtime="2h" genre="Action" rating="4"></MetaInfoRow>   
+          <View style={styles.testing}>
+              <MetaInfoRow year="2025" runtime="2h" genre="Action" rating="4"></MetaInfoRow>   
+         
           <Button text="Button" buttonBgColor={COLORS.blueLight} buttonTextColor={COLORS.blueDark}></Button>
+          
           <Button text="Button" buttonBgColor={COLORS.greenLight} buttonTextColor={COLORS.greenDark}></Button>
+          
           <MediaCard posterUrl="https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg" title="The Godfather (1972)" year="1972"></MediaCard>
-          <ButtonRounded></ButtonRounded>
+          
+          <SearchResultCard posterUrl="https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg" title="The Godfather (1972)" year="1972" mediaType="Thriller, Drama"></SearchResultCard>
+          </View>
+        
+          
 
-   
         </ScrollView>
       </SafeAreaView>
     </View>
@@ -89,5 +97,8 @@ const styles = StyleSheet.create({
           alignItems: "center",
           justifyContent: "space-between",
           backgroundColor: COLORS.background,
+      },
+      testing:{
+        gap: 20,
       }
 })

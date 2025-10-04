@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         width: SIZES.lg,
         height: SIZES.lg,
-        borderRadius: 16, // Half of width/height for circle
+        borderRadius: 16,
    },
    icon:{
         color: COLORS.blueDark,
