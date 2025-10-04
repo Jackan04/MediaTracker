@@ -1,3 +1,5 @@
+import { getDb } from './db.js';
+
 const insertItem =  async (item) => {
     const db = await getDb()
     const now = Date.now()
@@ -49,7 +51,7 @@ const insertItem =  async (item) => {
 
 const getSavedItems = async (mediaType, isWatched) => {
   const db = await getDb();
-  db.getAllAsync(
+  return await db.getAllAsync(
     `SELECT *
      FROM items
      WHERE media_type = ? AND watched = ?
@@ -104,3 +106,5 @@ const toggleWatched = async (id, isWatched) => {
     }
     
 }
+
+export { deleteItem, getSavedItems, insertItem, togglePinned, toggleWatched };

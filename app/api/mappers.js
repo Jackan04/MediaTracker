@@ -1,6 +1,10 @@
+// Assistance from ChatGPT to provide these mappers
+
 // TMDB API response mappers: 
-// mapDetails() for database storage and detail pages 
-// mapPreview() for all the card components
+    // mapDetails() for database storage and details page for search results and trending items
+    // mapPreview() for preview card components 
+    // mapSearchResults() for search result components
+
 
 export function mapDetails(tmdb, mediaType) {
   const isMovie = mediaType === 'movie';
