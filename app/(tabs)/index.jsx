@@ -2,14 +2,17 @@ import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getTrendingMovies, getTrendingShows } from "../api/tmdb.js";
+import Button from "../components/Button/Button.jsx";
 import MediaCard from "../components/MediaCard.jsx";
 import { initDb } from "../server/db.js";
 import globalStyles from '../utils/globalStyles.js';
+import { COLORS, SIZES } from "../utils/theme.js";
 
 export default function Index() {
 
   const[trendingMovies, setTrendingMovies] = useState([])
   const[trendingShows, setTrendingShows] = useState([])
+  const[activeFilter, setActiveFilter] = useState("movie")
 
    useEffect(() => {
       const loadData = async () => {
@@ -25,15 +28,17 @@ export default function Index() {
    useEffect(() => {
       
     const loadTrendingItems = async () =>{
-        try{
-        // Wait for both responses to return
-         const [moviesResult, showsResult] = await Promise.all([
-              getTrendingMovies(),
-              getTrendingShows()
-          ])
-
-          setTrendingMovies(moviesResult || [])
-          setTrendingShows(showsResult || [])
+        
+      try{
+          if(activeFilter === "movie"){
+            const movies = await getTrendingMovies() 
+            setTrendingMovies(movies)
+          }
+          else{
+            const shows = await getTrendingShows() 
+            setTrendingShows(shows)
+          }
+            
         }
         catch(error){
           console.error("Error when loading trending items", error)
@@ -41,42 +46,39 @@ export default function Index() {
       }
       loadTrendingItems()
 
-   }, [])
+   }, [activeFilter])
 
   return (
     
       <SafeAreaView style={styles.container} edges={['left', 'right', 'bottom']}>
+        <View style={styles.buttons}>
+            <Button 
+              text="Movies"
+              buttonBgColor = {activeFilter === "movie" ? COLORS.blueLight : COLORS.greyLight}
+              buttonTextColor = {activeFilter === "movie" ? COLORS.blueDark : COLORS.greyDark} 
+              onPress={() => setActiveFilter("movie")}
+            ></Button>
+
+            <Button 
+              text="Shows"
+              buttonBgColor = {activeFilter === "tv" ? COLORS.blueLight : COLORS.greyLight}
+              buttonTextColor = {activeFilter === "tv" ? COLORS.blueDark : COLORS.greyDark}
+              onPress={() => setActiveFilter("tv")}
+            ></Button>
+        </View>
         
-        <Text style={[globalStyles.heading, styles.heading]}>Trending Movies</Text>
+        <Text style={[globalStyles.heading, styles.heading]}>{activeFilter === "movie" ? "Trending Movies" : "Trending Shows"}</Text>
         <FlatList
             style={styles.list}
-            data={trendingMovies} 
+            data={activeFilter === "movie" ? trendingMovies : trendingShows} 
             numColumns={3}
             columnWrapperStyle={styles.row}
             renderItem={({item}) => (
-                <MediaCard 
-                    posterUrl={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
-                    title={item.title}
-                    year={item.year}
-                />
-            )}
-            keyExtractor={item => item.tmdb_id}
-            
-          />  
-          <View style={styles.seperator}></View>
-        
-        <Text style={[globalStyles.heading, styles.heading]}>Trending Shows</Text>
-        <FlatList
-          style={styles.list}
-            data={trendingShows}
-            numColumns={3}
-            columnWrapperStyle={styles.row}
-            renderItem={({item}) => (
-                <MediaCard 
-                    posterUrl={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
-                    title={item.title}
-                    year={item.year}
-                />
+              <MediaCard 
+                  posterUrl={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
+                  title={item.title}
+                  year={item.year}
+              />
             )}
             keyExtractor={item => item.tmdb_id}
             
@@ -93,15 +95,17 @@ const styles = StyleSheet.create({
           gap: 30,
           
       },
+      buttons:{
+        flexDirection:"row",
+        justifyContent:"center",
+        gap: SIZES.sm
+      },
       row:{
         justifyContent: "space-around"
       },
       heading:{
        alignSelf: "center"
      },
-     seperator:{
-      borderWidth: 1,
-      borderColor: "#333"
-     }
+
       
 })

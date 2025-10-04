@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
         marginTop: 30,
     },
     buttons:{
-        gap: SIZES.xs,
+        gap: SIZES.sm,
         flexDirection: "row",
         justifyContent: "center",
     },
