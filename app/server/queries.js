@@ -74,8 +74,6 @@ const deleteItem = async (id) => {
 }
 
 const getPinnedItems =  async (mediaType) => {
-    if(!mediaType) throw new Error("media_type is required")
-    
     const db = await getDb()
     try{
         return await db.getAllAsync('SELECT * FROM items WHERE media_type = ? AND pinned = ? ORDER BY created_at DESC', [mediaType, 1])

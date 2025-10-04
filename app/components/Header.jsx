@@ -14,7 +14,7 @@ export default function Header(props){
 
 const styles = StyleSheet.create({
     container:{
-        height: 100,
+        height: 90,
         alignItems: "center",
         justifyContent: "center",
         width: "100%",

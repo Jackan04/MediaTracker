@@ -39,9 +39,6 @@ export default function Index() {
               getTrendingShows()
           ])
 
-          console.log('Movies result:', moviesResult)
-          console.log('Shows result:', showsResult)
-
           setTrendingMovies(moviesResult.results || [])
           setTrendingShows(showsResult.results || [])
         }
@@ -54,8 +51,7 @@ export default function Index() {
    }, [])
 
   return (
-    <View style={styles.container}>
-      <Header title="Home"/>        
+    <View style={styles.container}>     
       <SafeAreaView style={styles.container}>
         <ScrollView>
           <View>
@@ -70,21 +66,7 @@ export default function Index() {
               <Text key={show.id}>{show.name}</Text>
             ))}
           </View>
-          
-          {/* Testing */}
-          <View style={styles.testing}>
-              <MetaInfoRow year="2025" runtime="2h" genre="Action" rating="4"></MetaInfoRow>   
          
-          <Button text="Button" buttonBgColor={COLORS.blueLight} buttonTextColor={COLORS.blueDark}></Button>
-          
-          <Button text="Button" buttonBgColor={COLORS.greenLight} buttonTextColor={COLORS.greenDark}></Button>
-          
-          <MediaCard posterUrl="https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg" title="The Godfather (1972)" year="1972"></MediaCard>
-          
-          <SearchResultCard posterUrl="https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg" title="The Godfather (1972)" year="1972" mediaType="Thriller, Drama"></SearchResultCard>
-
-          <PinnedRow></PinnedRow>
-          </View>
         
           
 
