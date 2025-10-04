@@ -74,6 +74,17 @@ const deleteItem = async (id) => {
 const togglePinned = async (id, isPinned) => {
     if(!id) throw new Error("id is required")
     const db = await getDb()
+    
+    const { pinnedItems } = await db.getFirstAsync(
+        `SELECT COUNT(*) AS count FROM items WHERE pinned = 1;`
+    );
+    
+    // Limit pinned items to 3
+    if (pinnedItems >= 3) {
+        throw new Error('You can only pin up to 3 items.');
+    }
+
+
     if(!isPinned){
         await db.runAsync('UPDATE items SET pinned = ? WHERE id = ?', [1, id]) 
     }

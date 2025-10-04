@@ -23,7 +23,6 @@ export default function MediaCard(props){
 const styles = StyleSheet.create({
     container: {
         width: 105,
-        height: 155,
         borderRadius: SIZES.radius,
         gap: SIZES.xxs,
     },

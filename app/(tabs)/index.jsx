@@ -11,6 +11,7 @@ import MetaInfoRow from "../components/MetaInfoRow.jsx";
 import MediaCard from "../components/MediaCard.jsx";
 import SearchResultCard from "../components/SearchResultCard.jsx";
 import Button from "../components/Button/Button.jsx";
+import PinnedRow from "../components/PinnedRow.jsx";
 
 export default function Index() {
 
@@ -81,6 +82,8 @@ export default function Index() {
           <MediaCard posterUrl="https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg" title="The Godfather (1972)" year="1972"></MediaCard>
           
           <SearchResultCard posterUrl="https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg" title="The Godfather (1972)" year="1972" mediaType="Thriller, Drama"></SearchResultCard>
+
+          <PinnedRow></PinnedRow>
           </View>
         
           
