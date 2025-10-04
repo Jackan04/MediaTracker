@@ -1,11 +1,12 @@
 import { Image } from "expo-image";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Pressable } from "react-native";
 import { SIZES, COLORS, FONT_SIZES } from "../utils/theme";
+import {getMovieDetails, getShowDetails} from "../api/tmdb";
 
 export default function MediaCard(props){
 
     return(
-        <View style={styles.container}>
+        <Pressable style={styles.container} >
             <Image 
                 source={{ uri: props.posterUrl }} 
                 style={styles.poster}
@@ -16,7 +17,7 @@ export default function MediaCard(props){
                 <Text style={styles.title}>{props.title}</Text>
                 <Text style={styles.year}>{props.year}</Text>
             </View>
-        </View>
+        </Pressable>
     )
 }
 
