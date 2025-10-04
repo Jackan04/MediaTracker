@@ -4,7 +4,7 @@ import { COLORS, SIZES } from "../../utils/theme"
 export default function Button(props){
 
     return(
-        <Pressable style={[styles.button, { backgroundColor: props.buttonBgColor || COLORS.blueLight }]}>
+        <Pressable onPress={props.onPress} style={[styles.button, { backgroundColor: props.buttonBgColor || COLORS.blueLight }]}>
             <Text style={[ styles.buttonText, { color: props.buttonTextColor || COLORS.blueDark }]}>
                 {props.text}
             </Text>

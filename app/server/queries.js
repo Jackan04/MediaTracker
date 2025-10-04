@@ -45,19 +45,19 @@ const insertItem =  async (item) => {
             now, // created_at
         ]
     )
-    
-    // Indexes for better performance
-    await db.execAsync(`CREATE INDEX IF NOT EXISTS idx_items_media_type ON items(media_type);`)
-    await db.execAsync(`CREATE INDEX IF NOT EXISTS idx_items_created_at ON items(created_at DESC);`)
 }
 
-const listItemsByMediaType = async (mediaType) => {
-    if(!mediaType) throw new Error("mediaType is required ('movie' or 'tv')")
-    const db = await getDb()
+const getSavedItems = async (mediaType, isWatched) => {
+  const db = await getDb();
+  db.getAllAsync(
+    `SELECT *
+     FROM items
+     WHERE media_type = ? AND watched = ?
+     ORDER BY created_at DESC`,
     
-    const allRows = await db.getAllAsync(`SELECT * FROM items WHERE media_type = ? ORDER BY created_at DESC`, [mediaType])
-    return allRows
-}
+     [mediaType, isWatched ? 1 : 0]
+  );
+};
 
 const deleteItem = async (id) => {
     if(!id) throw new Error("id is required")

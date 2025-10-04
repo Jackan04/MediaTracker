@@ -26,7 +26,7 @@ export default function Index() {
             console.error("Error initializing database:", error)
           }
         };
-        // loadData();
+        loadData();
    }, [])
 
    useEffect(() => {
