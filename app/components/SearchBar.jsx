@@ -1,14 +1,22 @@
-import { TextInput, StyleSheet, View } from "react-native"
 import { Ionicons } from '@expo/vector-icons'
-import { SIZES, COLORS, FONT_SIZES } from "../utils/theme"
+import { StyleSheet, TextInput, View } from "react-native"
+import { COLORS, FONT_SIZES, SIZES } from "../utils/theme"
 
-export default function SearchBar(){
+export default function SearchBar(props){
 
     return(
         <View>
             <View style={styles.searchBar}>
                 <Ionicons name="search" size={SIZES.md} color={COLORS.subText}></Ionicons>
-                <TextInput style={styles.input} placeholder="Find something to watch">
+                <TextInput 
+                style={styles.input} 
+                placeholder="Find something to watch"
+                value={props.value}
+                onChangeText={props.onChangeText}
+                onSubmitEditing={props.onSubmitEditing}
+                
+                >
+                
                 </TextInput>
             </View>
 

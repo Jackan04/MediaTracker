@@ -1,5 +1,5 @@
 import { Image } from "expo-image";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { COLORS, FONT_SIZES, SIZES } from "../utils/theme";
 import ButtonRounded from './Button/ButtonRounded';
 
@@ -15,9 +15,9 @@ export default function SearchResultCard(props){
                 contentFit="cover"
             />
             <View style={styles.texts}>
-                <Text style={styles.title}>{props.title}</Text>
+                <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">{props.title}</Text>
                 <Text style={styles.year}>{props.year}</Text>
-                <Text style={styles.mediaType}>{props.mediaType}</Text>
+                <Text style={styles.mediaType}>{props.mediaType === "movie" ? "Movie" : "Show"}</Text>
             </View>
         </View>
             <ButtonRounded></ButtonRounded>
@@ -43,6 +43,8 @@ const styles = StyleSheet.create({
     },
     texts:{
         gap: SIZES.xxs,
+        flex: 1, 
+        maxWidth: 180, 
     },
     title:{
         fontSize: FONT_SIZES.sm,

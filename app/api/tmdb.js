@@ -1,4 +1,4 @@
-import { mapDetails, mapPreview } from "./mappers";
+import { mapDetails, mapPreview, mapSearchResults } from "./mappers";
 
 const options = {
   method: "GET",
@@ -16,7 +16,7 @@ export async function searchByMediaType(mediaType, query){
         const response = await fetch(`https://api.themoviedb.org/3/search/${mediaType}?query=${query}`, options)
         const json = await response.json()   
 
-        const searchResults = json.results.map(result => mapPreview(result, isMovie ? "movie" : "tv")) // Map each item from the search results to get only the necessary fields
+        const searchResults = json.results.map(result => mapSearchResults(result, isMovie ? "movie" : "tv")) // Map each item from the search results to get only the necessary fields
 
         return searchResults
     }
@@ -29,10 +29,13 @@ export async function searchByMediaType(mediaType, query){
 export async function searchMedia(query){
 
     try{
-        const response = fetch(`https://api.themoviedb.org/3/search/multi?${query}`, options)
+        const response = await fetch(`https://api.themoviedb.org/3/search/multi?query=${query}`, options)
         const json = await response.json()   
 
-        const searchResults = json.results.map(result => mapPreview(result, isMovie ? "movie" : "tv")) // Map each item from the search results to get only the necessary fields
+        // Filter out people from the search result
+        const searchResults = json.results
+            .filter(result => result.media_type === 'movie' || result.media_type === 'tv')
+            .map(result => mapSearchResults(result, result.media_type))
 
         return searchResults
     }
@@ -41,36 +44,7 @@ export async function searchMedia(query){
     }    
 }
 
-// export async function searchMovies(query){
 
-//     try{
-//         const response = await fetch(`https://api.themoviedb.org/3/search/movie?query=${query}`, options)
-//         const json = await response.json()   
-
-//         const movieResults = json.results.map(movie => mapPreview(movie, 'movie')) // Map each item from the search results to get only the necessary fields
-
-//         return movieResults
-//     }
-//     catch(error){
-//         console.error(`Error: ${error.message}`)
-//     }    
-// }
-
-// export async function searchShows(query){
-
-//     try{
-//         const response = await fetch(`https://api.themoviedb.org/3/search/tv?query=${query}`, options)
-//         const json = await response.json()
-        
-//         const showResults = json.results.map(show => mapPreview(show, 'tv')) // Map each item from the search results to get only the necessary fields
-
-//         return showResults
-//     }
-//     catch(error){
-//         console.error(`Error: ${error.message}`)
-//     }
-    
-// }
 
 export async function getTrendingMovies(){
 
