@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { getSavedItems } from "../server/queries.js";
 import globalStyles from "../utils/globalStyles.js";
 import { COLORS, SIZES } from "../utils/theme.js";
@@ -49,21 +49,16 @@ export default function WatchList(props){
              
             </View>
             
-            <FlatList 
-            style={styles.list}
-            data={watchList}
-            numColumns={3}
-            columnWrapperStyle={styles.row}
-            ItemSeparatorComponent={() => <View style={{ height: SIZES.sm }} />}
-            renderItem={({item}) => (
-                <MediaCard 
-                    posterUrl={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
-                    title={item.title}
-                    year={item.year}
-                />
-            )}
-            keyExtractor={item => item.id.toString()}
-            />           
+            <View style={styles.grid}>
+                {watchList.map(item => (
+                    <MediaCard 
+                        key={item.id}
+                        posterUrl={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
+                        title={item.title}
+                        year={item.year}
+                    />
+                ))}
+            </View>           
         </View>
        
 
@@ -72,24 +67,23 @@ export default function WatchList(props){
 }
 
 const styles = StyleSheet.create({
-    list:{
-        marginTop: 30,
+    grid: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-evenly',
+        gap: SIZES.sm,
+        marginTop: SIZES.lg,
+        paddingBottom: SIZES.xl, // Extra padding for tab bar
     },
-    row:{
-        justifyContent: "space-evenly",
-
-    },
-     filterHeader:{
+    filterHeader:{
+        marginTop: SIZES.lg,
         flexDirection:"row",
         justifyContent:"space-between",
         alignItems: "center",
         gap: SIZES.sm,
-
     },
     buttons:{
         flexDirection:"row",
         gap: SIZES.sm,
     }
-   
-
 })

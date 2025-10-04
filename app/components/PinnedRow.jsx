@@ -33,7 +33,7 @@ export default function PinnedRow(props){
 const styles = StyleSheet.create({
     container:{
         flexDirection: "row",
-        justifyContent: "space-evenly",
+        justifyContent:"space-evenly",
         alignItems: "flex-start", 
         marginTop: SIZES.sm,
         borderRadius: SIZES.radius,
