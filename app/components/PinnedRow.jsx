@@ -1,17 +1,31 @@
+import { useEffect, useState } from "react"
 import { StyleSheet, View } from "react-native"
+import { getPinnedItems } from "../server/queries.js"
 import { COLORS, SIZES } from "../utils/theme.js"
 import MediaCard from "./MediaCard"
 
 
-export default function PinnedRow(){
+export default function PinnedRow(props){
+    const [pinnedItems, setPinnedItems] = useState([])
+
+    useEffect(() => {
+        const loadPinnedItems = async () => {
+            const result = await getPinnedItems(props.mediaType)
+            setPinnedItems(result || [])
+        }
+
+        loadPinnedItems()
+    }, [props.mediaType])
 
     return(
-        <View style={styles.container}>
-
-            <MediaCard posterUrl="https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg" title="The Godfather" year="1972"></MediaCard>
-            <MediaCard posterUrl="https://image.tmdb.org/t/p/w500/56v2KjBlU4XaOv9rVYEQypROD7P.jpg" title="Stranger Things" year="2016"></MediaCard>
-            <MediaCard posterUrl="https://image.tmdb.org/t/p/w500/rSPw7tgCH9c6NqICZef4kZjFOQ5.jpg" title="Avengers: Endgame" year="2019"></MediaCard> 
-    
+        <View style={styles.container}> 
+            {pinnedItems.map((item, index) => 
+            <MediaCard 
+                key={index}  
+                posterUrl={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
+                title={item.title}
+                year={item.year}
+            ></MediaCard>)} 
         </View>
     )
 }

@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { getSavedItems } from "../server/queries.js";
+import { SIZES, COLORS } from "../utils/theme.js";
 import Button from "./Button/Button";
-import Header from "./Header";
 import MediaCard from "./MediaCard.jsx";
 
 export default function WatchList(props){
@@ -28,38 +27,33 @@ export default function WatchList(props){
     }, [props.mediaType, activeFilter])
 
     return(
-        <View style = {styles.container}>
-            <Header>{props.mediaType === "movie" ? "Movies" : "Shows"}</Header>
-            
-            <SafeAreaView style={styles.container}>
+        <View style = {styles.container}>            
              <View style = {styles.buttons}>
                 <Button 
                     text="Watchlist"
-                    onPress={setActiveFilter("watchlist")}
+                    onPress={() => setActiveFilter('watchlist')}
                 />
 
                 <Button 
                     text="Archived"
                     onPress={() => setActiveFilter('archived')}
+                    buttonBgColor = {COLORS.greyLight}
+                    buttonTextColor = {COLORS.greyDark}
                 />
             </View>
             
             <FlatList 
-            style={styles.items}
+            style={styles.list}
             data={watchList}
             renderItem={({item}) => (
                 <MediaCard 
-                    posterUrl={`https://image.tmdb.org/t/p/w500${item.poster_path}`} // TMDB base URL (500 in size) + poster path
+                    posterUrl={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
                     title={item.title}
                     year={item.year}
                 />
             )}
             keyExtractor={item => item.id.toString()}
-            />
-
-            </SafeAreaView>
-           
-
+            />           
         </View>
        
 
@@ -69,8 +63,14 @@ export default function WatchList(props){
 
 const styles = StyleSheet.create({
     container: {
-      
+      flex: 1,
+      flexWrap: "wrap",
+      justifyContent: "center",
+      alignItems: "center",
     },
+    list:{
+        gap: SIZES.xs,
+    }
    
 
 })

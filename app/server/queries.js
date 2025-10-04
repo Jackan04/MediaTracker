@@ -73,6 +73,19 @@ const deleteItem = async (id) => {
     }
 }
 
+const getPinnedItems =  async (mediaType) => {
+    if(!mediaType) throw new Error("media_type is required")
+    
+    const db = await getDb()
+    try{
+        return await db.getAllAsync('SELECT * FROM items WHERE media_type = ? AND pinned = ? ORDER BY created_at DESC', [mediaType, 1])
+    }
+    catch(error){
+        console.error("Database query failed:", error);
+        throw error;
+    }
+}   
+
 const togglePinned = async (id, isPinned) => {
     if(!id) throw new Error("id is required")
     const db = await getDb()
@@ -107,4 +120,5 @@ const toggleWatched = async (id, isWatched) => {
     
 }
 
-export { deleteItem, getSavedItems, insertItem, togglePinned, toggleWatched };
+export { deleteItem, getPinnedItems, getSavedItems, insertItem, togglePinned, toggleWatched };
+
