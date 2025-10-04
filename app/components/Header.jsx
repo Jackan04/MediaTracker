@@ -14,14 +14,11 @@ export default function Header(props){
 
 const styles = StyleSheet.create({
     container:{
-        height: 90,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: "flex-start",
         width: "100%",
-        backgroundColor: COLORS.blueLight,
     },
     headerText: {
-        color: COLORS.blueDark,
+        color: COLORS.textPrimary,
     }
  
 

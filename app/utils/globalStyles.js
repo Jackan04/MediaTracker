@@ -3,13 +3,12 @@ import {COLORS, FONT_SIZES, SIZES} from '../utils/theme.js'
 
 const globalStyles = StyleSheet.create({
     
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "space-between",
-        backgroundColor: COLORS.background,
 
-    },
+    container:{
+        flex: 1,
+        gap: 30,
+        margin: SIZES.sm,
+      },
     title:{
         fontWeight: 600,
         fontSize: FONT_SIZES.xxl,

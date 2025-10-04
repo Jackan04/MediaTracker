@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { getSavedItems } from "../server/queries.js";
+import globalStyles from "../utils/globalStyles.js";
 import { COLORS, SIZES } from "../utils/theme.js";
 import Button from "./Button/Button";
 import MediaCard from "./MediaCard.jsx";
@@ -28,7 +29,9 @@ export default function WatchList(props){
 
     return(
         <View style = {styles.container}>            
-             <View style = {styles.buttons}>
+             <View style = {styles.filterHeader}>
+                <Text style={[globalStyles.heading, styles.heading]}>{activeFilter === "watchlist" ? "Watchlist" : "Archived"}</Text>
+                <View style = {styles.buttons}>
                 <Button 
                     text="Watchlist"
                     onPress={() => setActiveFilter('watchlist')}
@@ -42,6 +45,8 @@ export default function WatchList(props){
                     buttonBgColor={activeFilter === 'archived' ? COLORS.blueLight : COLORS.greyLight}
                     buttonTextColor={activeFilter === 'archived' ? COLORS.blueDark : COLORS.greyDark}
                 />
+                </View>
+             
             </View>
             
             <FlatList 
@@ -70,13 +75,20 @@ const styles = StyleSheet.create({
     list:{
         marginTop: 30,
     },
-    buttons:{
-        gap: SIZES.sm,
-        flexDirection: "row",
-        justifyContent: "center",
-    },
     row:{
-        justifyContent: "space-around"
+        justifyContent: "space-evenly",
+
+    },
+     filterHeader:{
+        flexDirection:"row",
+        justifyContent:"space-between",
+        alignItems: "center",
+        gap: SIZES.sm,
+
+    },
+    buttons:{
+        flexDirection:"row",
+        gap: SIZES.sm,
     }
    
 

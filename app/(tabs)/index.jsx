@@ -7,6 +7,7 @@ import MediaCard from "../components/MediaCard.jsx";
 import { initDb } from "../server/db.js";
 import globalStyles from '../utils/globalStyles.js';
 import { COLORS, SIZES } from "../utils/theme.js";
+import Header from "../components/Header.jsx";
 
 export default function Index() {
 
@@ -50,9 +51,12 @@ export default function Index() {
 
   return (
     
-      <SafeAreaView style={styles.container} edges={['left', 'right', 'bottom']}>
-        <View style={styles.buttons}>
-            <Button 
+      <SafeAreaView style={globalStyles.container} edges={['left', 'right', 'bottom']}>
+        <Header title="Home"></Header>
+        <View style={styles.filterHeader}>
+          <Text style={[globalStyles.heading, styles.heading]}>{activeFilter === "movie" ? "Trending Movies" : "Trending Shows"}</Text>
+            <View style = {styles.buttons}>
+              <Button 
               text="Movies"
               buttonBgColor = {activeFilter === "movie" ? COLORS.blueLight : COLORS.greyLight}
               buttonTextColor = {activeFilter === "movie" ? COLORS.blueDark : COLORS.greyDark} 
@@ -65,9 +69,11 @@ export default function Index() {
               buttonTextColor = {activeFilter === "tv" ? COLORS.blueDark : COLORS.greyDark}
               onPress={() => setActiveFilter("tv")}
             ></Button>
+            </View>
+         
         </View>
         
-        <Text style={[globalStyles.heading, styles.heading]}>{activeFilter === "movie" ? "Trending Movies" : "Trending Shows"}</Text>
+        
         <FlatList
             style={styles.list}
             data={activeFilter === "movie" ? trendingMovies : trendingShows} 
@@ -91,22 +97,19 @@ export default function Index() {
 }
 
 const styles = StyleSheet.create({
-      container:{
-          flex: 1,
-          gap: 30,
-          
+      filterHeader:{
+        flexDirection:"row",
+        justifyContent:"space-between",
+        alignItems: "center",
+        gap: SIZES.sm,
+
+      },
+      row:{
+        justifyContent: "space-between",
       },
       buttons:{
         flexDirection:"row",
-        justifyContent:"center",
-        gap: SIZES.sm
-      },
-      row:{
-        justifyContent: "space-around",
-      },
-      heading:{
-       alignSelf: "center"
-     },
-
+        gap: SIZES.sm,
+    }
       
 })
