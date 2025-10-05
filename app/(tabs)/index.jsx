@@ -3,11 +3,11 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getTrendingMovies, getTrendingShows } from "../api/tmdb.js";
 import Button from "../components/Button/Button.jsx";
+import Header from "../components/Header.jsx";
 import MediaCard from "../components/MediaCard.jsx";
 import { initDb } from "../server/db.js";
 import globalStyles from '../utils/globalStyles.js';
 import { COLORS, SIZES } from "../utils/theme.js";
-import Header from "../components/Header.jsx";
 
 export default function Index() {
 

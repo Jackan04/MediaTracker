@@ -7,7 +7,7 @@ const globalStyles = StyleSheet.create({
     container:{
         flex: 1,
         gap: 30,
-        margin: SIZES.sm,
+        padding: SIZES.sm,
       },
     title:{
         fontWeight: 600,
