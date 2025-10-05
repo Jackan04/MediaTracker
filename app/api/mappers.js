@@ -1,15 +1,11 @@
-// Assistance from ChatGPT to provide these mappers
-
-// TMDB API response mappers: 
-    // mapDetails() for database storage and details page for search results and trending items
-    // mapPreview() for preview card components 
-    // mapSearchResults() for search result components
-
-
+// Assistance from ChatGPT to provide the mapper
+// TMDB API response mapper for database storage 
 export function mapDetails(tmdb, mediaType) {
   const isMovie = mediaType === 'movie';
-  const posterBaseUrl = "https://image.tmdb.org/t/p/w500";  // TMDB only gives a unique poster path, like "/abc123.jpg".
-                                                            // To display the image, I have to prepend it with a base URL
+  
+  // TMDB returns relative poster paths like "/abc123.jpg"
+  // Using w500 as default size, can be adjusted depending on where it's used
+  const posterBaseUrl = "https://image.tmdb.org/t/p/w500";
   
   return {
     tmdb_id: tmdb.id,
