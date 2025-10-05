@@ -8,7 +8,7 @@ import globalStyles from "../utils/globalStyles";
 export default function ShowScreen(){
 
     return(
-        <SafeAreaView style={globalStyles.container} edges={['left', 'right', 'bottom']}>
+        <SafeAreaView style={globalStyles.container} edges={['left', 'right', 'bottom', 'top']}>
             <Header title="Shows"></Header>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View>

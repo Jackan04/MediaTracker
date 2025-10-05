@@ -86,7 +86,7 @@ export default function DetailScreen(){
 
     if (loading) {
         return (
-            <SafeAreaView style={globalStyles.container}>
+            <SafeAreaView style={globalStyles.container} edges={['left', 'right', 'bottom', 'top']}>
                 <Header title="Details" />
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <Text>Loading...</Text>
@@ -97,7 +97,7 @@ export default function DetailScreen(){
 
     if (!item) {
         return (
-            <SafeAreaView style={globalStyles.container} edges={['left', 'right', 'bottom']}>
+            <SafeAreaView style={globalStyles.container} edges={['left', 'right', 'bottom', 'top']}>
                 <Header title="Details" />
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <Text>Error loading details</Text>
@@ -108,7 +108,7 @@ export default function DetailScreen(){
 
 
     return(
-        <SafeAreaView style={globalStyles.container} edges={['left', 'right', 'bottom']}>
+        <SafeAreaView style={globalStyles.container} edges={['left', 'right', 'bottom', 'top']}>
             <View>
             <Button style={styles.backButton} text="Back" onPress={() => router.back()}></Button>
             </View>

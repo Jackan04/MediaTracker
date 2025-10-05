@@ -51,7 +51,7 @@ export default function Index() {
 
   return (
     
-      <SafeAreaView style={globalStyles.container} edges={['left', 'right', 'bottom']}>
+      <SafeAreaView style={globalStyles.container} edges={['left', 'right', 'bottom', 'top']}>
         <Header title="Home"></Header>
         <View style={styles.filterHeader}>
           <Text style={[globalStyles.heading, styles.heading]}>{activeFilter === "movie" ? "Trending Movies" : "Trending Shows"}</Text>

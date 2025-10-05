@@ -1,7 +1,7 @@
 import { useFonts } from 'expo-font';
 import { Stack } from "expo-router";
 
- function RootLayout() {
+ export default function RootLayout() {
    const [loaded] = useFonts({
     'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
     'Roboto-Medium': require('../assets/fonts/Roboto-Medium.ttf'),
@@ -13,6 +13,7 @@ import { Stack } from "expo-router";
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="DetailScreen" />
     </Stack>
   );
 }

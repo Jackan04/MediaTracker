@@ -38,7 +38,7 @@ export default function SearchScreen(){
 
 
     return(
-        <SafeAreaView style={globalStyles.container} edges={['left', 'right', 'bottom']}>
+        <SafeAreaView style={globalStyles.container} edges={['left', 'right', 'bottom', 'top']}>
             <Header title="Search"></Header>
             <SearchBar 
                 value={query}

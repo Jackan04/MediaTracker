@@ -8,7 +8,7 @@ import globalStyles from "../utils/globalStyles";
 export default function MovieScreen(){
 
     return(
-        <SafeAreaView style={globalStyles.container} edges={['left', 'right', 'bottom']}>
+        <SafeAreaView style={globalStyles.container} edges={['left', 'right', 'bottom', 'top']}>
             <Header title="Movies"></Header>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View>
