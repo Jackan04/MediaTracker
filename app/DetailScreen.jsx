@@ -1,5 +1,5 @@
 import { Image } from "expo-image";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -7,15 +7,16 @@ import { getItemDetails } from "./api/tmdb";
 import Button from "./components/Button/Button";
 import Header from "./components/Header";
 import MetaInfoRow from "./components/MetaInfoRow";
-import { COLORS } from "./utils/theme";
-import { insertItem, isItemSaved, deleteItem } from "./server/queries";
+import { deleteItem, insertItem, isItemSaved } from "./server/queries";
 import globalStyles from "./utils/globalStyles";
+import { COLORS, SIZES } from "./utils/theme";
 
 export default function DetailScreen(){
     const params = useLocalSearchParams();
     const [item, setItem] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isSaved, setIsSaved] = useState()
+    const router = useRouter()
 
     useEffect(() => {
         const displayDetails = async () => {
@@ -85,7 +86,7 @@ export default function DetailScreen(){
 
     if (loading) {
         return (
-            <SafeAreaView style={globalStyles.container} edges={['left', 'right', 'bottom']}>
+            <SafeAreaView style={globalStyles.container}>
                 <Header title="Details" />
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <Text>Loading...</Text>
@@ -108,9 +109,11 @@ export default function DetailScreen(){
 
     return(
         <SafeAreaView style={globalStyles.container} edges={['left', 'right', 'bottom']}>
-            <Header title="Details" />
+            <View>
+            <Button style={styles.backButton} text="Back" onPress={() => router.back()}></Button>
+            </View>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <View>
+                <View style={styles.top}>
                     <Image 
                         style={styles.poster}
                         source={{ uri: item.poster_path }} 
@@ -118,7 +121,7 @@ export default function DetailScreen(){
                         contentFit="cover"
                     />
 
-                    <Text style={[styles.title, globalStyles.title]}>{item.title}</Text>
+                    <Text style={[globalStyles.title]}>{item.title}</Text>
                     <MetaInfoRow
                         year={item.year}
                         runtime={ item.media_type === "movie" ? Math.round((item.runtime_minutes / 60) * 10) / 10 + "h" : ""} // Round to one decimal  and display an empty string if the value is zero
@@ -139,15 +142,19 @@ export default function DetailScreen(){
 }
 
 const styles = StyleSheet.create({
+    top:{
+        alignSelf: "center",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: SIZES.sm,
+    },
     poster: {
         width: 200,
         height: 300,
-        alignSelf: 'center',
-        marginVertical: 20,
         borderRadius: 8,
     },
-    title: {
-        textAlign: 'center',
-        marginBottom: 16,
+    backButton:{
+        flex: 0,
+        alignSelf: "flex-start",
     }
 })

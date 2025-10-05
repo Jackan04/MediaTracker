@@ -1,8 +1,8 @@
 import { Image } from "expo-image";
+import { router } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { COLORS, FONT_SIZES, SIZES } from "../utils/theme";
 import ButtonRounded from './Button/ButtonRounded';
-import { router } from "expo-router";
 
 export default function SearchResultCard(props){
 

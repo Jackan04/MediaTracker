@@ -14,12 +14,10 @@ export default function Button(props){
 
 const styles = StyleSheet.create({
     button:{
-        justifyContent: "center",
         alignItems: "center",
         paddingVertical: SIZES.buttonVertical,
         paddingHorizontal: SIZES.buttonHorizontal, 
         borderRadius: SIZES.radius,
-        alignSelf: "flex-start",
         // background color and text color are set dynamically with props
     },
     buttonText:{
