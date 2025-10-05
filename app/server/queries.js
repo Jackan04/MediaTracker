@@ -61,11 +61,26 @@ const getSavedItems = async (mediaType, isWatched) => {
   );
 };
 
-const deleteItem = async (id) => {
-    if(!id) throw new Error("id is required")
+
+const isItemSaved = async (tmdb_id) => {
+  const db = await getDb();
+
+  const item = await db.getFirstAsync(
+    `SELECT saved FROM items WHERE tmdb_id = ?`,
+     [tmdb_id]
+  );
+  if(!item) return 
+
+  const isSaved = item.saved === 1 ? true : false
+   
+  return isSaved
+};
+
+const deleteItem = async (tmdb_id) => {
+    if(!tmdb_id) throw new Error("id is required")
     const db = await getDb()
     try{
-        await db.runAsync('DELETE FROM items WHERE id = ?', [id])
+        await db.runAsync('DELETE FROM items WHERE tmdb_id = ?', [tmdb_id])        
     }
     catch(error){
         console.error("Database delete failed:", error);
@@ -118,5 +133,5 @@ const toggleWatched = async (id, isWatched) => {
     
 }
 
-export { deleteItem, getPinnedItems, getSavedItems, insertItem, togglePinned, toggleWatched };
+export { deleteItem, getPinnedItems, getSavedItems, isItemSaved, insertItem, togglePinned, toggleWatched };
 

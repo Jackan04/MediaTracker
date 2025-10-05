@@ -1,19 +1,21 @@
 import { Image } from "expo-image";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getItemDetails } from "./api/tmdb";
 import Button from "./components/Button/Button";
 import Header from "./components/Header";
 import MetaInfoRow from "./components/MetaInfoRow";
-import { insertItem } from "./server/queries";
+import { COLORS } from "./utils/theme";
+import { insertItem, isItemSaved, deleteItem } from "./server/queries";
 import globalStyles from "./utils/globalStyles";
 
 export default function DetailScreen(){
     const params = useLocalSearchParams();
     const [item, setItem] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isSaved, setIsSaved] = useState()
 
     useEffect(() => {
         const displayDetails = async () => {
@@ -34,6 +36,52 @@ export default function DetailScreen(){
         }
     }, [params.tmdb_id, params.media_type]);
 
+    useEffect(() => {
+        const checkIfSaved = async () => {
+            if (item && item.tmdb_id) {
+                try {
+                    const savedStatus = await isItemSaved(item.tmdb_id);
+                    setIsSaved(savedStatus);
+                } catch (error) {
+                    console.error('Error checking if item is saved:', error);
+                }
+            }
+        };
+        checkIfSaved();
+    }, [item]); 
+
+    const handleDelete = async () => {
+    Alert.alert(
+        "Remove from Library",
+        "Are you sure you want to remove this item from your library?",
+        [
+            {
+                text: "Cancel",
+                style: "cancel"
+            },
+            {
+            text: "Remove",
+            style: "destructive",
+            onPress: async () => {
+                try {
+                    await deleteItem(item.tmdb_id);
+                    setIsSaved(false);
+                } catch (error) {
+                    console.error('Error deleting item:', error);
+                }
+            }
+            }
+        ]
+    )
+}
+    const handleSave = async () => {
+        try {
+            await insertItem(item);
+            setIsSaved(true);
+        } catch (error) {
+            console.error('Error saving item:', error);
+        }
+    };
 
     if (loading) {
         return (
@@ -78,7 +126,12 @@ export default function DetailScreen(){
                         rating={item.vote_average}
                     />
                     
-                    <Button text="Add to Library" onPress={() => insertItem(item)} />
+                    <Button 
+                        text={isSaved ? "Remove from Library" : "Save to Library"} 
+                        onPress={isSaved ? handleDelete : handleSave} 
+                        buttonTextColor = {isSaved ? COLORS.redDark : COLORS.blueDark}
+                        buttonBgColor = {isSaved ? COLORS.redLight : COLORS.blueLight}
+                    />
                 </View>
             </ScrollView>
         </SafeAreaView>
