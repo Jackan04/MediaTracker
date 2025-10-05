@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { ScrollView, StyleSheet, Text, View, FlatList } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { searchByMediaType, searchMedia } from "../api/tmdb";
 import Button from "../components/Button/Button";
 import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
+import SearchResultCard from '../components/SearchResultCard.jsx';
 import globalStyles from "../utils/globalStyles";
 import { COLORS, SIZES } from "../utils/theme";
-import SearchResultCard from '../components/SearchResultCard.jsx'
 
 export default function SearchScreen(){
     const[query, setQuery] = useState("")
@@ -21,17 +21,12 @@ export default function SearchScreen(){
             let results;
             if(searchFilter === "movie"){
                 results = await searchByMediaType("movie", query)
-                console.log("Movie search results:", results)
-                
             }
             else if(searchFilter === "tv"){
                 results = await searchByMediaType("tv", query)
-                console.log("TV search results:", results)
-                
             }
             else{
                 results = await searchMedia(query)
-                console.log("General search results:", results)
     
             }
             
@@ -70,8 +65,8 @@ export default function SearchScreen(){
               <FlatList
                 style={styles.results}
                 data={searchResults}
-                renderItem={({item}) => <SearchResultCard posterUrl={item.poster_path} title={item.title} year={item.year} mediaType={item. media_type}/>}
-                keyExtractor={item => item.id}
+                renderItem={({item}) => <SearchResultCard posterUrl={item.poster_path} title={item.title} year={item.year} mediaType={item.media_type}/>}
+                keyExtractor={item => item.tmdb_id.toString()}
                 ItemSeparatorComponent={() => <View style={{ height: SIZES.sm }} />}
             />
 
