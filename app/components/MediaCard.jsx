@@ -1,12 +1,29 @@
 import { Image } from "expo-image";
-import { StyleSheet, Text, View, Pressable } from "react-native";
-import { SIZES, COLORS, FONT_SIZES } from "../utils/theme";
-import {getMovieDetails, getShowDetails} from "../api/tmdb";
+import { router } from "expo-router";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { COLORS, FONT_SIZES, SIZES } from "../utils/theme";
 
 export default function MediaCard(props){
 
+    
+    const handlePress = () => {
+        if (!props.item || !props.item.tmdb_id || !props.item.media_type) {
+            console.warn('MediaCard: Missing required item data for navigation');
+            return;
+        }
+        
+        // Pass the 'id' and 'media_type' parameters to the function on the DetailScreen page to retrieve the relevant details.
+        router.push({
+            pathname: '/DetailScreen',
+            params: { 
+                tmdb_id: props.item.tmdb_id,
+                media_type: props.item.media_type
+            }
+        });
+    }
+
     return(
-        <Pressable style={styles.container} >
+        <Pressable style={styles.container} onPress={handlePress}>
             <Image 
                 source={{ uri: props.posterUrl }} 
                 style={styles.poster}

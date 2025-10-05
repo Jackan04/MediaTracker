@@ -65,7 +65,8 @@ export default function SearchScreen(){
               <FlatList
                 style={styles.results}
                 data={searchResults}
-                renderItem={({item}) => <SearchResultCard posterUrl={item.poster_path} title={item.title} year={item.year} mediaType={item.media_type}/>}
+                
+                renderItem={({item}) => <SearchResultCard item={item} posterUrl={item.poster_path} title={item.title} year={item.year} mediaType={item.media_type}/>}
                 keyExtractor={item => item.tmdb_id.toString()}
                 ItemSeparatorComponent={() => <View style={{ height: SIZES.sm }} />}
             />

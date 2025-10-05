@@ -1,4 +1,4 @@
-import { mapDetails, mapPreview, mapSearchResults } from "./mappers";
+import { mapDetails } from "./mappers";
 
 const options = {
   method: "GET",
@@ -17,7 +17,7 @@ export async function searchByMediaType(mediaType, query){
         const response = await fetch(`https://api.themoviedb.org/3/search/${mediaType}?query=${cleanQuery}`, options)
         const json = await response.json()   
 
-        const searchResults = json.results.map(result => mapSearchResults(result, isMovie ? "movie" : "tv")) // Map each item from the search results to get only the necessary fields
+        const searchResults = json.results.map(result => mapDetails(result, isMovie ? "movie" : "tv")) // Map each item from the search results to get only the necessary fields
 
         return searchResults
     }
@@ -37,7 +37,7 @@ export async function searchMedia(query){
         // Filter out people from the search result
         const searchResults = json.results
             .filter(result => result.media_type === 'movie' || result.media_type === 'tv')
-            .map(result => mapSearchResults(result, result.media_type))
+            .map(result => mapDetails(result, result.media_type))
 
         return searchResults
     }
@@ -54,7 +54,7 @@ export async function getTrendingMovies(){
         const response = await fetch(`https://api.themoviedb.org/3/trending/movie/day`, options)
         const json = await response.json()
         
-        const trendingMovies = json.results.map(movie => mapPreview(movie, 'movie')) // Map each item from the trending movies to get only the necessary fields
+        const trendingMovies = json.results.map(movie => mapDetails(movie, 'movie')) // Map each item from the trending movies to get only the necessary fields
 
         return trendingMovies
     }
@@ -69,7 +69,7 @@ export async function getTrendingShows(){
     try{
         const response = await fetch(`https://api.themoviedb.org/3/trending/tv/day`, options)
         const json = await response.json()
-        const trendingShows = json.results.map(show => mapPreview(show, 'tv')) // Map each item from the trending shows to get only the necessary fields
+        const trendingShows = json.results.map(show => mapDetails(show, 'tv')) // Map each item from the trending shows to get only the necessary fields
         
         return trendingShows 
     }
@@ -79,14 +79,16 @@ export async function getTrendingShows(){
     
 }
 
-export async function getMovieDetails(id){
+export async function getItemDetails(id, mediaType){
 
     try{
-        const response = await fetch(`https://api.themoviedb.org/3/movie/${id}`, options)
+
+        const endpoint = mediaType === "movie" ? "movie" : "tv";
+        const response = await fetch(`https://api.themoviedb.org/3/${endpoint}/${id}`, options)
         const json = await response.json()
-        const movie = mapDetails(json, 'movie')
+        const item = mapDetails(json, mediaType)
         
-        return movie
+        return item
     }
     catch(error){
         console.error(`Error: ${error.message}`)
@@ -94,17 +96,32 @@ export async function getMovieDetails(id){
     
 }
 
-export async function getShowDetails(id){
+// export async function getMovieDetails(id){
 
-    try{
-        const response = await fetch(`https://api.themoviedb.org/3/tv/${id}`, options)
-        const json = await response.json()
-        const show = mapDetails(json, 'tv')
+//     try{
+//         const response = await fetch(`https://api.themoviedb.org/3/movie/${id}`, options)
+//         const json = await response.json()
+//         const movie = mapDetails(json, 'movie')
         
-        return show
-    }
-    catch(error){
-        console.error(`Error: ${error.message}`)
-    }
+//         return movie
+//     }
+//     catch(error){
+//         console.error(`Error: ${error.message}`)
+//     }
     
-}
+// }
+
+// export async function getShowDetails(id){
+
+//     try{
+//         const response = await fetch(`https://api.themoviedb.org/3/tv/${id}`, options)
+//         const json = await response.json()
+//         const show = mapDetails(json, 'tv')
+        
+//         return show
+//     }
+//     catch(error){
+//         console.error(`Error: ${error.message}`)
+//     }
+    
+// }

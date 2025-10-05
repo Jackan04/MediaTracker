@@ -21,6 +21,7 @@ export default function PinnedRow(props){
         <View style={styles.container}> 
             {pinnedItems.map((item, index) => 
             <MediaCard 
+                item={item}
                 key={index}  
                 posterUrl={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
                 title={item.title}

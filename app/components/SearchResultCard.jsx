@@ -2,11 +2,28 @@ import { Image } from "expo-image";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { COLORS, FONT_SIZES, SIZES } from "../utils/theme";
 import ButtonRounded from './Button/ButtonRounded';
+import { router } from "expo-router";
 
 export default function SearchResultCard(props){
 
+     const handlePress = () => {
+        if (!props.item || !props.item.tmdb_id || !props.item.media_type) {
+            console.warn('SearchResultCard: Missing required item data for navigation');
+            return;
+        }
+        
+        // Pass the 'id' and 'media_type' parameters to DisplayDetails() on the DetailScreen page to retrieve the relevant details
+        router.push({
+        pathname: '/DetailScreen',
+        params: { 
+             tmdb_id: props.item.tmdb_id,
+            media_type: props.item.media_type
+        }
+    });
+    }
+
     return(
-        <Pressable style={styles.container}>
+        <Pressable style={styles.container} onPress={handlePress}>
             <View style={styles.leftContent}>
                 <Image 
                 source={{ uri: props.posterUrl }} 

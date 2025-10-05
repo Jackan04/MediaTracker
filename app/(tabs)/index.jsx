@@ -82,6 +82,7 @@ export default function Index() {
             ItemSeparatorComponent={() => <View style={{ height: SIZES.sm }} />}
             renderItem={({item}) => (
               <MediaCard 
+                  item={item}
                   posterUrl={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
                   title={item.title}
                   year={item.year}

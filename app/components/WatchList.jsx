@@ -52,6 +52,7 @@ export default function WatchList(props){
             <View style={styles.grid}>
                 {watchList.map(item => (
                     <MediaCard 
+                        item={item}
                         key={item.id}
                         posterUrl={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
                         title={item.title}
