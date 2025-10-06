@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignContent: "center",
         alignSelf: "flex-start",
+        flexWrap: "wrap",
         gap: SIZES.sm,
         paddingVertical: SIZES.xs,
         paddingHorizontal: SIZES.sm,
