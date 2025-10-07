@@ -7,27 +7,31 @@ import { getItemDetails } from "./api/tmdb";
 import Button from "./components/Button/Button";
 import Header from "./components/Header";
 import MetaInfoRow from "./components/MetaInfoRow";
-import { deleteItem, insertItem, isItemSaved } from "./server/queries";
+import {
+  deleteItem,
+  getWatchState,
+  insertItem,
+  isItemSaved,
+  toggleWatched,
+} from "./server/queries";
 import globalStyles from "./utils/globalStyles";
 import { COLORS, SIZES } from "./utils/theme";
 
 export default function DetailScreen() {
   const params = useLocalSearchParams();
   const [item, setItem] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [isSaved, setIsSaved] = useState();
+  const [isWatched, setIsWatched] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
     const displayDetails = async () => {
       try {
-        setLoading(true);
         const result = await getItemDetails(params.tmdb_id, params.media_type);
         setItem(result);
       } catch (error) {
         console.error("Error fetching details:", error);
       } finally {
-        setLoading(false);
       }
     };
 
@@ -47,7 +51,18 @@ export default function DetailScreen() {
         }
       }
     };
+    const checkIfWatched = async () => {
+      if (item && item.tmdb_id) {
+        try {
+          const watchStatus = await getWatchState(item.tmdb_id);
+          setIsWatched(Boolean(watchStatus));
+        } catch (error) {
+          console.error("Error checking if item is watched:", error);
+        }
+      }
+    };
     checkIfSaved();
+    checkIfWatched();
   }, [item]);
 
   const handleDelete = async () => {
@@ -83,6 +98,31 @@ export default function DetailScreen() {
     }
   };
 
+  const handleToggledWatched = async () => {
+    try {
+      const newValue = await toggleWatched(item.tmdb_id, isWatched);
+      setIsWatched(Boolean(newValue));
+    } catch (error) {
+      console.error("Error toggling watch state:", error);
+    }
+  };
+
+  if (!item) {
+    return (
+      <SafeAreaView
+        style={globalStyles.container}
+        edges={["left", "right", "bottom", "top"]}
+      >
+        <Header title="Details" />
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Text>Error loading details</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView
       style={globalStyles.container}
@@ -109,22 +149,35 @@ export default function DetailScreen() {
             year={item.year}
             runtime={
               item.media_type === "movie"
-                ? Math.round((item.runtime_minutes / 60) * 10) / 10 + "h"
+                ? Math.round((item.runtime_minutes / 60) * 10) / 10 + " h"
                 : ""
             } // Round to one decimal  and display an empty string if the value is zero
             genre={JSON.parse(item.genres_json)
               .slice(0, 3)
               .map((genre) => genre.name)
-              .join(", ")} // Parse JSON, limit to 3 genres
+              .join(", ")} // Parse JSON and limit to 3 genres
             rating={Math.round(item.vote_average * 10) / 10}
           />
-
-          <Button
-            text={isSaved ? "Remove from Library" : "Save to Library"}
-            onPress={isSaved ? handleDelete : handleSave}
-            buttonTextColor={isSaved ? COLORS.redDark : COLORS.blueDark}
-            buttonBgColor={isSaved ? COLORS.redLight : COLORS.blueLight}
-          />
+          <View>
+            <Button
+              text={isSaved ? "Remove from Library" : "Save to Library"}
+              onPress={isSaved ? handleDelete : handleSave}
+              buttonTextColor={isSaved ? COLORS.redDark : COLORS.blueDark}
+              buttonBgColor={isSaved ? COLORS.redLight : COLORS.blueLight}
+            />
+            <Button
+              text={isWatched ? "Toggle Unwatched" : "Toggle Watched"}
+              onPress={
+                isSaved
+                  ? handleToggledWatched
+                  : () => alert(
+                      "You have to save the item before toggling watch state"
+                    )
+              }
+              buttonTextColor={isWatched ? COLORS.redDark : COLORS.blueDark}
+              buttonBgColor={isWatched ? COLORS.redLight : COLORS.blueLight}
+            />
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
