@@ -66,6 +66,10 @@ export default function DetailScreen() {
   }, [item]);
 
   const handleDelete = async () => {
+    if (isWatched) {
+      alert("Please mark the item as unwatched before deleting it.");
+      return
+    }
     Alert.alert(
       "Remove from Library",
       "Are you sure you want to remove this item from your library?",
@@ -170,9 +174,10 @@ export default function DetailScreen() {
               onPress={
                 isSaved
                   ? handleToggledWatched
-                  : () => alert(
-                      "You have to save the item before toggling watch state"
-                    )
+                  : () =>
+                      alert(
+                        "Please save the item before changing its watch status."
+                      )
               }
               buttonTextColor={isWatched ? COLORS.redDark : COLORS.blueDark}
               buttonBgColor={isWatched ? COLORS.redLight : COLORS.blueLight}
