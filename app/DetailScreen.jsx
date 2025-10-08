@@ -9,6 +9,7 @@ import Header from "./components/Header";
 import MetaInfoRow from "./components/MetaInfoRow";
 import { useWatchlist } from "./contexts/WatchListContext";
 import { useWatchStatus } from "./contexts/WatchStatusContext";
+import { useSavedStatus } from "./contexts/SavedStatusContext";
 import {
   deleteItem,
   getWatchState,
@@ -22,10 +23,10 @@ import { COLORS, SIZES } from "./utils/theme";
 export default function DetailScreen() {
   const params = useLocalSearchParams();
   const [item, setItem] = useState(null);
-  const [isSaved, setIsSaved] = useState();
   const router = useRouter();
   const { refreshWatchList } = useWatchlist();
-  const { watchStatus, updateWatchStatus } = useWatchStatus();
+  const { watchStatus, updateWatchStatus } = useWatchStatus()
+  const {savedStatus, updateSavedStatus} = useSavedStatus()
 
   useEffect(() => {
     const displayDetails = async () => {
@@ -47,8 +48,8 @@ export default function DetailScreen() {
     const checkIfSaved = async () => {
       if (item && item.tmdb_id) {
         try {
-          const savedStatus = await isItemSaved(item.tmdb_id);
-          setIsSaved(savedStatus);
+          const status = await isItemSaved(item.tmdb_id);
+          updateSavedStatus(item.tmdb_id, Boolean(status));
         } catch (error) {
           console.error("Error checking if item is saved:", error);
         }
@@ -69,7 +70,7 @@ export default function DetailScreen() {
   }, [item]);
 
   const handleDelete = async () => {
-    if (watchStatus) {
+    if (watchStatus[item.tmdb_id]) {
       alert("Please mark the item as unwatched before deleting it.");
       return;
     }
@@ -87,7 +88,7 @@ export default function DetailScreen() {
           onPress: async () => {
             try {
               await deleteItem(item.tmdb_id);
-              setIsSaved(false);
+              updateSavedStatus(item.tmdb_id, Boolean(savedStatus));
               refreshWatchList();
             } catch (error) {
               console.error("Error deleting item:", error);
@@ -100,7 +101,7 @@ export default function DetailScreen() {
   const handleSave = async () => {
     try {
       await insertItem(item);
-      setIsSaved(true);
+      updateSavedStatus(item.tmdb_id, Boolean(savedStatus));
       refreshWatchList();
     } catch (error) {
       console.error("Error saving item:", error);
@@ -109,6 +110,9 @@ export default function DetailScreen() {
 
   const handleToggledWatched = async () => {
     try {
+      if(savedStatus[item.tmdb_id] === false){
+        handleSave(item)
+      }
       const current = watchStatus ? Boolean(watchStatus[item.tmdb_id]) : false;
       const newStatus = await toggleWatched(item.tmdb_id, current);
       updateWatchStatus(item.tmdb_id, Boolean(newStatus));
@@ -171,10 +175,18 @@ export default function DetailScreen() {
           />
           <View>
             <Button
-              text={isSaved ? "Remove from Library" : "Save to Library"}
-              onPress={isSaved ? handleDelete : handleSave}
-              buttonTextColor={isSaved ? COLORS.redDark : COLORS.blueDark}
-              buttonBgColor={isSaved ? COLORS.redLight : COLORS.blueLight}
+              text={
+                savedStatus[[item.tmdb_id]]
+                  ? "Remove from Library"
+                  : "Save to Library"
+              }
+              onPress={savedStatus[item.tmdb_id] ? handleDelete : handleSave}
+              buttonTextColor={
+                savedStatus[item.tmdb_id] ? COLORS.redDark : COLORS.blueDark
+              }
+              buttonBgColor={
+                savedStatus[item.tmdb_id] ? COLORS.redLight : COLORS.blueLight
+              }
             />
             <Button
               text={
@@ -183,7 +195,7 @@ export default function DetailScreen() {
                   : "Toggle Watched"
               }
               onPress={
-                isSaved
+                savedStatus
                   ? handleToggledWatched
                   : () =>
                       alert(
@@ -191,12 +203,12 @@ export default function DetailScreen() {
                       )
               }
               buttonTextColor={
-                watchStatus && watchStatus[item.tmdb_id]
+                watchStatus[item.tmdb_id]
                   ? COLORS.redDark
                   : COLORS.blueDark
               }
               buttonBgColor={
-                watchStatus && watchStatus[item.tmdb_id]
+                watchStatus[item.tmdb_id]
                   ? COLORS.redLight
                   : COLORS.blueLight
               }

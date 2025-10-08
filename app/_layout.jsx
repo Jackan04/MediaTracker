@@ -1,5 +1,6 @@
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
+import { SavedStatusProvider } from "./contexts/SavedStatusContext";
 import { WatchlistProvider } from "./contexts/WatchListContext";
 import { WatchStatusProvider } from "./contexts/WatchStatusContext";
 
@@ -15,10 +16,12 @@ export default function RootLayout() {
   return (
     <WatchlistProvider>
       <WatchStatusProvider>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="DetailScreen" />
-        </Stack>
+        <SavedStatusProvider>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="DetailScreen" />
+          </Stack>
+        </SavedStatusProvider>
       </WatchStatusProvider>
     </WatchlistProvider>
   );
