@@ -91,8 +91,8 @@ const getPinnedItems = async (mediaType) => {
   const db = await getDb();
   try {
     return await db.getAllAsync(
-      "SELECT * FROM items WHERE media_type = ? AND pinned = ? ORDER BY created_at DESC",
-      [mediaType, 1]
+      "SELECT * FROM items WHERE media_type = ? AND pinned = ? AND watched = ? ORDER BY created_at DESC",
+      [mediaType, 1, 0]
     );
   } catch (error) {
     console.error("Database query failed:", error);
@@ -100,8 +100,10 @@ const getPinnedItems = async (mediaType) => {
   }
 };
 
-const togglePinned = async (id, isPinned) => {
+const togglePinned = async (id, isPinned, isWatched) => {
   if (!id) throw new Error("id is required");
+  if(isWatched) alert("This item is marked as watched. Watched items can't be pinned.")
+    
   const db = await getDb();
 
   const { pinnedItems } = await db.getFirstAsync(
