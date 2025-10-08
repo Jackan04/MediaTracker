@@ -7,6 +7,8 @@ import { getItemDetails } from "./api/tmdb";
 import Button from "./components/Button/Button";
 import Header from "./components/Header";
 import MetaInfoRow from "./components/MetaInfoRow";
+import { useWatchlist } from "./contexts/WatchListContext";
+import { useWatchStatus } from "./contexts/WatchStatusContext";
 import {
   deleteItem,
   getWatchState,
@@ -21,8 +23,9 @@ export default function DetailScreen() {
   const params = useLocalSearchParams();
   const [item, setItem] = useState(null);
   const [isSaved, setIsSaved] = useState();
-  const [isWatched, setIsWatched] = useState(null);
   const router = useRouter();
+  const { refreshWatchList } = useWatchlist();
+  const { watchStatus, updateWatchStatus } = useWatchStatus();
 
   useEffect(() => {
     const displayDetails = async () => {
@@ -54,8 +57,8 @@ export default function DetailScreen() {
     const checkIfWatched = async () => {
       if (item && item.tmdb_id) {
         try {
-          const watchStatus = await getWatchState(item.tmdb_id);
-          setIsWatched(Boolean(watchStatus));
+          const status = await getWatchState(item.tmdb_id);
+          updateWatchStatus(item.tmdb_id, Boolean(status));
         } catch (error) {
           console.error("Error checking if item is watched:", error);
         }
@@ -66,9 +69,9 @@ export default function DetailScreen() {
   }, [item]);
 
   const handleDelete = async () => {
-    if (isWatched) {
+    if (watchStatus) {
       alert("Please mark the item as unwatched before deleting it.");
-      return
+      return;
     }
     Alert.alert(
       "Remove from Library",
@@ -85,6 +88,7 @@ export default function DetailScreen() {
             try {
               await deleteItem(item.tmdb_id);
               setIsSaved(false);
+              refreshWatchList();
             } catch (error) {
               console.error("Error deleting item:", error);
             }
@@ -97,6 +101,7 @@ export default function DetailScreen() {
     try {
       await insertItem(item);
       setIsSaved(true);
+      refreshWatchList();
     } catch (error) {
       console.error("Error saving item:", error);
     }
@@ -104,8 +109,10 @@ export default function DetailScreen() {
 
   const handleToggledWatched = async () => {
     try {
-      const newValue = await toggleWatched(item.tmdb_id, isWatched);
-      setIsWatched(Boolean(newValue));
+      const current = watchStatus ? Boolean(watchStatus[item.tmdb_id]) : false;
+      const newStatus = await toggleWatched(item.tmdb_id, current);
+      updateWatchStatus(item.tmdb_id, Boolean(newStatus));
+      refreshWatchList();
     } catch (error) {
       console.error("Error toggling watch state:", error);
     }
@@ -170,7 +177,11 @@ export default function DetailScreen() {
               buttonBgColor={isSaved ? COLORS.redLight : COLORS.blueLight}
             />
             <Button
-              text={isWatched ? "Toggle Unwatched" : "Toggle Watched"}
+              text={
+                watchStatus[item.tmdb_id]
+                  ? "Toggle Unwatched"
+                  : "Toggle Watched"
+              }
               onPress={
                 isSaved
                   ? handleToggledWatched
@@ -179,8 +190,16 @@ export default function DetailScreen() {
                         "Please save the item before changing its watch status."
                       )
               }
-              buttonTextColor={isWatched ? COLORS.redDark : COLORS.blueDark}
-              buttonBgColor={isWatched ? COLORS.redLight : COLORS.blueLight}
+              buttonTextColor={
+                watchStatus && watchStatus[item.tmdb_id]
+                  ? COLORS.redDark
+                  : COLORS.blueDark
+              }
+              buttonBgColor={
+                watchStatus && watchStatus[item.tmdb_id]
+                  ? COLORS.redLight
+                  : COLORS.blueLight
+              }
             />
           </View>
         </View>
