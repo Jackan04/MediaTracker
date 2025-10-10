@@ -11,6 +11,7 @@ import { usePinnedStatus } from "./contexts/PinnedStatusContext";
 import { useSavedStatus } from "./contexts/SavedStatusContext";
 import { useWatchlist } from "./contexts/WatchListContext";
 import { useWatchStatus } from "./contexts/WatchStatusContext";
+import { OpenUrl } from "./utils/helpers";
 import {
   deleteItem,
   getPinnedState,
@@ -105,6 +106,7 @@ export default function DetailScreen() {
             try {
               await deleteItem(item.tmdb_id);
               updateSavedStatus(item.tmdb_id, false);
+              updatePinnedStatus(item.tmdb_id, false);
               refreshWatchList();
             } catch (error) {
               console.error("Error deleting item:", error);
@@ -191,6 +193,10 @@ export default function DetailScreen() {
           icon={pinnedStatus[item.tmdb_id] ? "bookmark" : "bookmark-outline"}
           onPress={handleToggledPinned}
         ></Button>
+        <Button
+          text="TMDB"
+          onPress={OpenUrl(item.homepage)}
+        ></Button>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.top}>
@@ -262,7 +268,7 @@ export default function DetailScreen() {
 const styles = StyleSheet.create({
   top: {
     flex: 1,
-    
+
     alignItems: "center",
     justifyContent: "center",
     gap: SIZES.sm,

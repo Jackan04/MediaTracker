@@ -2,7 +2,6 @@ import { Image } from "expo-image";
 import { router } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { COLORS, FONT_SIZES, SIZES } from "../utils/theme";
-import ButtonRounded from './Button/ButtonRounded';
 
 export default function SearchResultCard(props){
 
@@ -37,7 +36,6 @@ export default function SearchResultCard(props){
                 <Text style={styles.mediaType}>{props.mediaType === "movie" ? "Movie" : "Show"}</Text>
             </View>
         </View>
-            <ButtonRounded></ButtonRounded>
         </Pressable>
     )
 }

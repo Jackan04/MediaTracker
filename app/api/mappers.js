@@ -17,7 +17,7 @@ export function mapDetails(tmdb, mediaType) {
         const date = isMovie ? tmdb.release_date : tmdb.first_air_date;
         return date ? Number(date.slice(0, 4)) : null;
     })(),
-
+    homepage: `https://www.themoviedb.org/${mediaType}/${tmdb.id}`,
     poster_path: tmdb.poster_path ? `${posterBaseUrl}${tmdb.poster_path}` : null,
     vote_average: typeof tmdb.vote_average === 'number' ? tmdb.vote_average : null,
     runtime_minutes: isMovie ? (tmdb.runtime ?? null) : null,
