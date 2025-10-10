@@ -221,7 +221,7 @@ export default function DetailScreen() {
               .join(", ")} // Parse JSON and limit to 3 genres
             rating={Math.round(item.vote_average * 10) / 10}
           />
-          <View>
+          <View style={styles.headerButtons}>
             <Button
               text={
                 savedStatus[[item.tmdb_id]]

@@ -1,6 +1,5 @@
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
-import { PinnedListProvider } from "./contexts/PinnedListContext";
 import { PinnedStatusProvider } from "./contexts/PinnedStatusContext";
 import { SavedStatusProvider } from "./contexts/SavedStatusContext";
 import { WatchlistProvider } from "./contexts/WatchListContext";
@@ -19,14 +18,12 @@ export default function RootLayout() {
     <WatchlistProvider>
       <WatchStatusProvider>
         <SavedStatusProvider>
-          <PinnedListProvider>
             <PinnedStatusProvider>
               <Stack screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="(tabs)" />
                 <Stack.Screen name="DetailScreen" />
               </Stack>
             </PinnedStatusProvider>
-          </PinnedListProvider>
         </SavedStatusProvider>
       </WatchStatusProvider>
     </WatchlistProvider>
