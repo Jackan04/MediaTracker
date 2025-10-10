@@ -9,13 +9,13 @@ import MediaCard from "./MediaCard.jsx";
 
 export default function WatchList(props) {
   const [watchList, setWatchlist] = useState([]);
-  const [activeFilter, setActiveFilter] = useState("watchlist"); // 'watchlist' or 'archived'
+  const [activeFilter, setActiveFilter] = useState("watchlist"); // 'watchlist' or 'watched'
   const { refreshToken } = useWatchlist();
 
   useEffect(() => {
     const loadWatchList = async () => {
       try {
-        const isWatched = activeFilter === "archived" ? 1 : 0;
+        const isWatched = activeFilter === "watched" ? 1 : 0;
         const result = await getSavedItems(props.mediaType, isWatched);
         setWatchlist(result || []);
       } catch (error) {
@@ -32,7 +32,7 @@ export default function WatchList(props) {
     <View style={styles.container}>
       <View style={styles.filterHeader}>
         <Text style={[globalStyles.heading, styles.heading]}>
-          {activeFilter === "watchlist" ? "Watchlist" : "Archived"}
+          {activeFilter === "watchlist" ? "Watchlist" : "Watched"}
         </Text>
         <View style={styles.buttons}>
           <Button
@@ -47,13 +47,13 @@ export default function WatchList(props) {
           />
 
           <Button
-            text="Archived"
-            onPress={() => setActiveFilter("archived")}
+            text="Watched"
+            onPress={() => setActiveFilter("watched")}
             buttonBgColor={
-              activeFilter === "archived" ? COLORS.blueLight : COLORS.greyLight
+              activeFilter === "watched" ? COLORS.blueLight : COLORS.greyLight
             }
             buttonTextColor={
-              activeFilter === "archived" ? COLORS.blueDark : COLORS.greyDark
+              activeFilter === "watched" ? COLORS.blueDark : COLORS.greyDark
             }
           />
         </View>

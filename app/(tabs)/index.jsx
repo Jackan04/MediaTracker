@@ -50,50 +50,59 @@ export default function Index() {
    }, [activeFilter])
 
   return (
-    
-      <SafeAreaView style={globalStyles.container} edges={['left', 'right', 'bottom', 'top']}>
-        <Header title="Home"></Header>
-        <View style={styles.filterHeader}>
-          <Text style={[globalStyles.heading, styles.heading]}>{activeFilter === "movie" ? "Trending Movies" : "Trending Shows"}</Text>
-            <View style = {styles.buttons}>
-              <Button 
-              text="Movies"
-              buttonBgColor = {activeFilter === "movie" ? COLORS.blueLight : COLORS.greyLight}
-              buttonTextColor = {activeFilter === "movie" ? COLORS.blueDark : COLORS.greyDark} 
-              onPress={() => setActiveFilter("movie")}
-            ></Button>
+    <SafeAreaView
+      style={globalStyles.container}
+      edges={["left", "right", "bottom", "top"]}
+    >
+      <Header title="Home"></Header>
+      <View style={styles.filterHeader}>
+        <Text style={[globalStyles.heading, styles.heading]}>
+          {activeFilter === "movie" ? "Trending Movies" : "Trending Shows"}
+        </Text>
+        <View style={styles.buttons}>
+          <Button
+            text={activeFilter === "movie" ? "Movies" : ""}
+            icon="film-outline"
+            buttonBgColor={
+              activeFilter === "movie" ? COLORS.blueLight : COLORS.greyLight
+            }
+            buttonTextColor={
+              activeFilter === "movie" ? COLORS.blueDark : COLORS.greyDark
+            }
+            onPress={() => setActiveFilter("movie")}
+          ></Button>
 
-            <Button 
-              text="Shows"
-              buttonBgColor = {activeFilter === "tv" ? COLORS.blueLight : COLORS.greyLight}
-              buttonTextColor = {activeFilter === "tv" ? COLORS.blueDark : COLORS.greyDark}
-              onPress={() => setActiveFilter("tv")}
-            ></Button>
-            </View>
-         
+          <Button
+            text={activeFilter === "movie" ? "" : "Shows"}
+            icon="tv-outline"
+            buttonBgColor={
+              activeFilter === "tv" ? COLORS.blueLight : COLORS.greyLight
+            }
+            buttonTextColor={
+              activeFilter === "tv" ? COLORS.blueDark : COLORS.greyDark
+            }
+            onPress={() => setActiveFilter("tv")}
+          ></Button>
         </View>
-        
-        
-        <FlatList
-            style={styles.list}
-            data={activeFilter === "movie" ? trendingMovies : trendingShows} 
-            numColumns={3}
-            columnWrapperStyle={styles.row}
-            ItemSeparatorComponent={() => <View style={{ height: SIZES.sm }} />}
-            renderItem={({item}) => (
-              <MediaCard 
-                  item={item}
-                  posterUrl={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
-                  title={item.title}
-                  year={item.year}
-              />
-            )}
-            keyExtractor={item => item.tmdb_id}
-            
-          />  
-      
-      </SafeAreaView>
-    
+      </View>
+
+      <FlatList
+        style={styles.list}
+        data={activeFilter === "movie" ? trendingMovies : trendingShows}
+        numColumns={3}
+        columnWrapperStyle={styles.row}
+        ItemSeparatorComponent={() => <View style={{ height: SIZES.sm }} />}
+        renderItem={({ item }) => (
+          <MediaCard
+            item={item}
+            posterUrl={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+            title={item.title}
+            year={item.year}
+          />
+        )}
+        keyExtractor={(item) => item.tmdb_id}
+      />
+    </SafeAreaView>
   );
 }
 
@@ -104,6 +113,9 @@ const styles = StyleSheet.create({
         alignItems: "center",
         gap: SIZES.sm,
 
+      },
+      heading:{
+        flexWrap: "wrap",
       },
       row:{
         justifyContent: "space-between",

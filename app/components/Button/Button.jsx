@@ -1,26 +1,56 @@
-import { Pressable, StyleSheet, Text } from "react-native"
-import { COLORS, SIZES } from "../../utils/theme"
+import { Ionicons } from "@expo/vector-icons";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { COLORS, SIZES } from "../../utils/theme";
 
-export default function Button(props){
-
-    return(
-        <Pressable onPress={props.onPress} style={[styles.button, { backgroundColor: props.buttonBgColor || COLORS.blueLight }]}>
-            <Text style={[ styles.buttonText, { color: props.buttonTextColor || COLORS.blueDark }]}>
-                {props.text}
-            </Text>
-        </Pressable>
-    )
+export default function Button(props) {
+  return (
+    <Pressable
+      onPress={props.onPress}
+      style={[
+        styles.button,
+        { backgroundColor: props.buttonBgColor || COLORS.blueLight },
+      ]}
+    >
+      <View style={styles.buttonContent}>
+        {props.icon && (
+          <Ionicons
+            name={props.icon}
+            size={SIZES.sm}
+            color={props.iconColor || props.buttonTextColor || COLORS.blueDark}
+            style={styles.icon}
+          />
+        )}
+        {props.text && (
+          <Text
+            style={[
+              styles.buttonText,
+              { color: props.buttonTextColor || COLORS.blueDark },
+            ]}
+          >
+            {props.text}
+          </Text>
+        )}
+      </View>
+    </Pressable>
+  );
 }
 
 const styles = StyleSheet.create({
   button: {
     alignItems: "center",
+    justifyContent: "center",
     paddingVertical: SIZES.buttonVertical,
     paddingHorizontal: SIZES.buttonHorizontal,
     borderRadius: SIZES.radius,
-    // background color and text color are set dynamically with props
+  },
+  buttonContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: SIZES.xs,
   },
   buttonText: {
     fontWeight: "500",
   },
+
 });

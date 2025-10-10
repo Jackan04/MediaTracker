@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { useWatchlist } from "../contexts/WatchListContext.jsx";
 import { getPinnedItems } from "../server/queries.js";
 import { COLORS, SIZES } from "../utils/theme.js";
@@ -17,6 +17,16 @@ export default function PinnedRow(props) {
 
     loadPinnedItems();
   }, [props.mediaType, refreshToken]);
+
+  if(pinnedItems.length === 0){
+    return (
+      <View style={styles.container}>
+        <Text style={styles.messageText}>
+          You haven’t pinned any items yet.
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -45,4 +55,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.border,
   },
+  messageText:{
+    color: COLORS.greyDark
+  }
 });

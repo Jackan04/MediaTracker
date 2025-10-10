@@ -90,10 +90,11 @@ const deleteItem = async (tmdb_id) => {
 const getPinnedItems = async (mediaType) => {
   const db = await getDb();
   try {
-    return await db.getAllAsync(
+    const result = await db.getAllAsync(
       "SELECT * FROM items WHERE media_type = ? AND pinned = ? AND watched = ? ORDER BY created_at DESC",
       [mediaType, 1, 0]
     );
+    return result;
   } catch (error) {
     console.error("Database query failed:", error);
     throw error;
@@ -116,8 +117,10 @@ const getPinnedState = async (tmdb_id) => {
 
 const togglePinned = async (tmdb_id, isPinned, isWatched) => {
   if (!tmdb_id) throw new Error("tmdb_id is required");
-  if (isWatched)
+  if (isWatched) {
     alert("This item is marked as watched. Watched items can't be pinned.");
+    return;
+  }
 
   const db = await getDb();
 
@@ -155,10 +158,10 @@ const toggleWatched = async (tmdb_id, isWatched) => {
   if (!tmdb_id) throw new Error("tmdb_id is required");
   const db = await getDb();
   const newValue = isWatched ? 0 : 1;
-  await db.runAsync("UPDATE items SET watched = ? WHERE tmdb_id = ?", [
-    newValue,
-    tmdb_id,
-  ]);
+  await db.runAsync(
+    "UPDATE items SET watched = ? AND pinned = ? WHERE tmdb_id = ?",
+    [newValue, 0, tmdb_id]
+  );
   return newValue;
 };
 

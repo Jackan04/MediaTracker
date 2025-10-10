@@ -184,17 +184,12 @@ export default function DetailScreen() {
         <Button
           style={styles.backButton}
           text="Back"
+          icon="arrow-back"
           onPress={() => router.back()}
         ></Button>
         <Button
-          text={pinnedStatus[item.tmdb_id] ? "Unpin" : "Pin"}
+          icon={pinnedStatus[item.tmdb_id] ? "bookmark" : "bookmark-outline"}
           onPress={handleToggledPinned}
-          buttonTextColor={
-            pinnedStatus[item.tmdb_id] ? COLORS.redDark : COLORS.blueDark
-          }
-          buttonBgColor={
-            pinnedStatus[item.tmdb_id] ? COLORS.redLight : COLORS.blueLight
-          }
         ></Button>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -267,7 +262,7 @@ export default function DetailScreen() {
 const styles = StyleSheet.create({
   top: {
     flex: 1,
-    alignSelf: "center",
+    
     alignItems: "center",
     justifyContent: "center",
     gap: SIZES.sm,
@@ -282,6 +277,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   mediaButtons: {
-    gap: SIZES.xs,
+    flexDirection: "row",
+    gap: SIZES.sm,
   },
 });

@@ -6,7 +6,9 @@ export default function MetaInfoRow(props) {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{props.year}</Text>
-      <Text style={styles.text}>{props.runtime}</Text>
+      {props.runtime && ( // only render if value is true
+        <Text style={styles.text}>{props.runtime}</Text>
+      )}
       <Text style={styles.text}>{props.genre}</Text>
       <View style={styles.ratingContainer}>
         <Text style={styles.text}>{props.rating}</Text>
@@ -25,7 +27,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignContent: "center",
-    alignSelf: "flex-start",
     flexWrap: "wrap",
     gap: SIZES.sm,
     paddingVertical: SIZES.xs,
