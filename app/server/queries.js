@@ -81,6 +81,7 @@ const deleteItem = async (tmdb_id) => {
   const db = await getDb();
   try {
     await db.runAsync("DELETE FROM items WHERE tmdb_id = ?", [tmdb_id]);
+
   } catch (error) {
     console.error("Database delete failed:", error);
     throw error;
@@ -100,26 +101,43 @@ const getPinnedItems = async (mediaType) => {
   }
 };
 
-const togglePinned = async (id, isPinned, isWatched) => {
-  if (!id) throw new Error("id is required");
-  if(isWatched) alert("This item is marked as watched. Watched items can't be pinned.")
-    
+const getPinnedState = async (tmdb_id) => {
+  const db = await getDb();
+  try {
+    const row = await db.getFirstAsync(
+      `SELECT pinned FROM items WHERE tmdb_id = ?`,
+      [tmdb_id]
+    );
+    return row && typeof row.pinned !== "undefined" ? row.pinned : 0;
+  } catch (error) {
+    console.error("Database query failed:", error);
+    throw error;
+  }
+};
+
+const togglePinned = async (tmdb_id, isPinned, isWatched, isSaved) => {
+  if (!tmdb_id) throw new Error("tmdb_id is required");
+  if (isWatched)
+    alert("This item is marked as watched. Watched items can't be pinned.");
+
   const db = await getDb();
 
-  const { pinnedItems } = await db.getFirstAsync(
+  const { currentlyPinnedItems } = await db.getFirstAsync(
     `SELECT COUNT(*) AS count FROM items WHERE pinned = 1;`
   );
 
   // Limit pinned items to 3
-  if (pinnedItems >= 3) {
+  if (currentlyPinnedItems >= 3) {
     throw new Error("You can only pin up to 3 items.");
   }
 
-  if (!isPinned) {
-    await db.runAsync("UPDATE items SET pinned = ? WHERE id = ?", [1, id]);
-  } else {
-    await db.runAsync("UPDATE items SET pinned = ? WHERE id = ?", [0, id]);
-  }
+  const newValue = isPinned ? 0 : 1;
+  await db.runAsync("UPDATE items SET pinned = ? WHERE tmdb_id = ?", [
+    newValue,
+    tmdb_id,
+  ]);
+
+  return newValue;
 };
 
 const toggleWatched = async (tmdb_id, isWatched) => {
@@ -146,6 +164,7 @@ const getWatchState = async (tmdb_id) => {
 export {
   deleteItem,
   getPinnedItems,
+  getPinnedState,
   getSavedItems,
   getWatchState,
   insertItem,

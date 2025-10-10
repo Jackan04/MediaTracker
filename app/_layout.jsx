@@ -3,6 +3,7 @@ import { Stack } from "expo-router";
 import { SavedStatusProvider } from "./contexts/SavedStatusContext";
 import { WatchlistProvider } from "./contexts/WatchListContext";
 import { WatchStatusProvider } from "./contexts/WatchStatusContext";
+import { PinnedStatusProvider } from "./contexts/PinnedStatusContext";
 
 export default function RootLayout() {
   const [loaded] = useFonts({
@@ -17,10 +18,12 @@ export default function RootLayout() {
     <WatchlistProvider>
       <WatchStatusProvider>
         <SavedStatusProvider>
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="(tabs)" />
-            <Stack.Screen name="DetailScreen" />
-          </Stack>
+          <PinnedStatusProvider>
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="(tabs)" />
+              <Stack.Screen name="DetailScreen" />
+            </Stack>
+          </PinnedStatusProvider>
         </SavedStatusProvider>
       </WatchStatusProvider>
     </WatchlistProvider>

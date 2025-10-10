@@ -7,14 +7,17 @@ import { getItemDetails } from "./api/tmdb";
 import Button from "./components/Button/Button";
 import Header from "./components/Header";
 import MetaInfoRow from "./components/MetaInfoRow";
+import { usePinnedStatus } from "./contexts/PinnedStatusContext";
+import { useSavedStatus } from "./contexts/SavedStatusContext";
 import { useWatchlist } from "./contexts/WatchListContext";
 import { useWatchStatus } from "./contexts/WatchStatusContext";
-import { useSavedStatus } from "./contexts/SavedStatusContext";
 import {
   deleteItem,
+  getPinnedState,
   getWatchState,
   insertItem,
   isItemSaved,
+  togglePinned,
   toggleWatched,
 } from "./server/queries";
 import globalStyles from "./utils/globalStyles";
@@ -25,8 +28,9 @@ export default function DetailScreen() {
   const [item, setItem] = useState(null);
   const router = useRouter();
   const { refreshWatchList } = useWatchlist();
-  const { watchStatus, updateWatchStatus } = useWatchStatus()
-  const {savedStatus, updateSavedStatus} = useSavedStatus()
+  const { watchStatus, updateWatchStatus } = useWatchStatus();
+  const { savedStatus, updateSavedStatus } = useSavedStatus();
+  const { pinnedStatus, updatePinnedStatus } = usePinnedStatus();
 
   useEffect(() => {
     const displayDetails = async () => {
@@ -55,6 +59,7 @@ export default function DetailScreen() {
         }
       }
     };
+
     const checkIfWatched = async () => {
       if (item && item.tmdb_id) {
         try {
@@ -65,8 +70,19 @@ export default function DetailScreen() {
         }
       }
     };
+    const checkIfPinned = async () => {
+      if (item && item.tmdb_id) {
+        try {
+          const status = await getPinnedState(item.tmdb_id);
+          updatePinnedStatus(item.tmdb_id, Boolean(status));
+        } catch (error) {
+          console.error("Error checking if item is pinned:", error);
+        }
+      }
+    };
     checkIfSaved();
     checkIfWatched();
+    checkIfPinned();
   }, [item]);
 
   const handleDelete = async () => {
@@ -88,7 +104,7 @@ export default function DetailScreen() {
           onPress: async () => {
             try {
               await deleteItem(item.tmdb_id);
-              updateSavedStatus(item.tmdb_id, Boolean(savedStatus));
+              updateSavedStatus(item.tmdb_id, false);
               refreshWatchList();
             } catch (error) {
               console.error("Error deleting item:", error);
@@ -101,7 +117,7 @@ export default function DetailScreen() {
   const handleSave = async () => {
     try {
       await insertItem(item);
-      updateSavedStatus(item.tmdb_id, Boolean(savedStatus));
+      updateSavedStatus(item.tmdb_id, true);
       refreshWatchList();
     } catch (error) {
       console.error("Error saving item:", error);
@@ -110,15 +126,36 @@ export default function DetailScreen() {
 
   const handleToggledWatched = async () => {
     try {
-      if(savedStatus[item.tmdb_id] === false){
-        handleSave(item)
+      if (savedStatus[item.tmdb_id] === false) {
+        handleSave(item); // Save item if it isn't already saved
       }
-      const current = watchStatus ? Boolean(watchStatus[item.tmdb_id]) : false;
-      const newStatus = await toggleWatched(item.tmdb_id, current);
+
+      const newStatus = await toggleWatched(
+        item.tmdb_id,
+        watchStatus[item.tmdb_id]
+      );
       updateWatchStatus(item.tmdb_id, Boolean(newStatus));
       refreshWatchList();
     } catch (error) {
       console.error("Error toggling watch state:", error);
+    }
+  };
+
+  const handleToggledPinned = async () => {
+    try {
+      if (savedStatus[item.tmdb_id] === false) {
+        handleSave(item); // Save item if it isn't already saved
+      }
+      const newStatus = await togglePinned(
+        item.tmdb_id,
+        pinnedStatus[item.tmdb_id],
+        watchStatus[item.tmdb_id]
+      );
+
+      updatePinnedStatus(item.tmdb_id, Boolean(newStatus));
+      refreshWatchList();
+    } catch (error) {
+      console.error("Error toggling pinned state:", error);
     }
   };
 
@@ -143,11 +180,21 @@ export default function DetailScreen() {
       style={globalStyles.container}
       edges={["left", "right", "bottom", "top"]}
     >
-      <View>
+      <View style={styles.headerButtons}>
         <Button
           style={styles.backButton}
           text="Back"
           onPress={() => router.back()}
+        ></Button>
+        <Button
+          text={pinnedStatus[item.tmdb_id] ? "Unpin Item" : "Pin Item"}
+          onPress={handleToggledPinned}
+          buttonTextColor={
+            pinnedStatus[item.tmdb_id] ? COLORS.redDark : COLORS.blueDark
+          }
+          buttonBgColor={
+            pinnedStatus[item.tmdb_id] ? COLORS.redLight : COLORS.blueLight
+          }
         ></Button>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -203,14 +250,10 @@ export default function DetailScreen() {
                       )
               }
               buttonTextColor={
-                watchStatus[item.tmdb_id]
-                  ? COLORS.redDark
-                  : COLORS.blueDark
+                watchStatus[item.tmdb_id] ? COLORS.redDark : COLORS.greenDark
               }
               buttonBgColor={
-                watchStatus[item.tmdb_id]
-                  ? COLORS.redLight
-                  : COLORS.blueLight
+                watchStatus[item.tmdb_id] ? COLORS.redLight : COLORS.greenLight
               }
             />
           </View>
@@ -232,8 +275,9 @@ const styles = StyleSheet.create({
     height: 300,
     borderRadius: 8,
   },
-  backButton: {
-    flex: 0,
-    alignSelf: "flex-start",
+  backButton: {},
+  headerButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });
