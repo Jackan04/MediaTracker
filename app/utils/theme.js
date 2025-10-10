@@ -7,13 +7,13 @@ export const COLORS = {
   subText: "#64748B",
   border: "#E2E8F0",
 
-  redDark: "#EC6A5B",
-  redLight: "#FCEFEE",
+  redDark: "#F91980",
+  redLight: "#F9E3EB",
+  yellowDark: "#FFD65B",
   greenDark: "#38C25D",
   greenLight: "#E1FAE8",
   blueDark: "#008DFF",
   blueLight: "#E4F2FE",
-  yellowDark: "#FFD65B",
 };
 
 export const FONT_SIZES = {

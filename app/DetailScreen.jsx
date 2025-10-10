@@ -106,7 +106,6 @@ export default function DetailScreen() {
               await deleteItem(item.tmdb_id);
               updateSavedStatus(item.tmdb_id, false);
               refreshWatchList();
-
             } catch (error) {
               console.error("Error deleting item:", error);
             }
@@ -188,7 +187,7 @@ export default function DetailScreen() {
           onPress={() => router.back()}
         ></Button>
         <Button
-          text={pinnedStatus[item.tmdb_id] ? "Unpin Item" : "Pin Item"}
+          text={pinnedStatus[item.tmdb_id] ? "Unpin" : "Pin"}
           onPress={handleToggledPinned}
           buttonTextColor={
             pinnedStatus[item.tmdb_id] ? COLORS.redDark : COLORS.blueDark
@@ -209,6 +208,7 @@ export default function DetailScreen() {
 
           <Text style={[globalStyles.title]}>{item.title}</Text>
           <MetaInfoRow
+            style={styles.metaInfoRow}
             year={item.year}
             runtime={
               item.media_type === "movie"
@@ -221,7 +221,7 @@ export default function DetailScreen() {
               .join(", ")} // Parse JSON and limit to 3 genres
             rating={Math.round(item.vote_average * 10) / 10}
           />
-          <View style={styles.headerButtons}>
+          <View style={styles.mediaButtons}>
             <Button
               text={
                 savedStatus[[item.tmdb_id]]
@@ -266,6 +266,7 @@ export default function DetailScreen() {
 
 const styles = StyleSheet.create({
   top: {
+    flex: 1,
     alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
@@ -276,9 +277,11 @@ const styles = StyleSheet.create({
     height: 300,
     borderRadius: 8,
   },
-  backButton: {},
   headerButtons: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  mediaButtons: {
+    gap: SIZES.xs,
   },
 });

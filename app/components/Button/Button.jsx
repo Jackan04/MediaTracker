@@ -13,14 +13,14 @@ export default function Button(props){
 }
 
 const styles = StyleSheet.create({
-    button:{
-        alignItems: "center",
-        paddingVertical: SIZES.buttonVertical,
-        paddingHorizontal: SIZES.buttonHorizontal, 
-        borderRadius: SIZES.radius,
-        // background color and text color are set dynamically with props
-    },
-    buttonText:{
-        fontWeight: "500",
-    }
-})
+  button: {
+    alignItems: "center",
+    paddingVertical: SIZES.buttonVertical,
+    paddingHorizontal: SIZES.buttonHorizontal,
+    borderRadius: SIZES.radius,
+    // background color and text color are set dynamically with props
+  },
+  buttonText: {
+    fontWeight: "500",
+  },
+});
