@@ -81,7 +81,6 @@ const deleteItem = async (tmdb_id) => {
   const db = await getDb();
   try {
     await db.runAsync("DELETE FROM items WHERE tmdb_id = ?", [tmdb_id]);
-
   } catch (error) {
     console.error("Database delete failed:", error);
     throw error;
@@ -115,20 +114,32 @@ const getPinnedState = async (tmdb_id) => {
   }
 };
 
-const togglePinned = async (tmdb_id, isPinned, isWatched, isSaved) => {
+const togglePinned = async (tmdb_id, isPinned, isWatched) => {
   if (!tmdb_id) throw new Error("tmdb_id is required");
   if (isWatched)
     alert("This item is marked as watched. Watched items can't be pinned.");
 
   const db = await getDb();
 
-  const { currentlyPinnedItems } = await db.getFirstAsync(
-    `SELECT COUNT(*) AS count FROM items WHERE pinned = 1;`
+  // Get the item's media type first
+  const item = await db.getFirstAsync(
+    `SELECT media_type FROM items WHERE tmdb_id = ?`,
+    [tmdb_id]
   );
 
-  // Limit pinned items to 3
-  if (currentlyPinnedItems >= 3) {
-    throw new Error("You can only pin up to 3 items.");
+  if (!item) throw new Error("Item not found");
+
+  // Only get currently pinned items if we're trying to pin (not unpin)
+  if (!isPinned) {
+    const currentlyPinnedItems = await getPinnedItems(item.media_type);
+
+    // Limit pinned items to 3 per media type
+    if (currentlyPinnedItems.length >= 3) {
+      alert(
+        "You can only pin up to 3 items. Please unpin one before adding another."
+      );
+      return;
+    }
   }
 
   const newValue = isPinned ? 0 : 1;

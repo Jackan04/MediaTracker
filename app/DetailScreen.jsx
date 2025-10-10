@@ -39,7 +39,6 @@ export default function DetailScreen() {
         setItem(result);
       } catch (error) {
         console.error("Error fetching details:", error);
-      } finally {
       }
     };
 
@@ -70,6 +69,7 @@ export default function DetailScreen() {
         }
       }
     };
+
     const checkIfPinned = async () => {
       if (item && item.tmdb_id) {
         try {
@@ -106,6 +106,7 @@ export default function DetailScreen() {
               await deleteItem(item.tmdb_id);
               updateSavedStatus(item.tmdb_id, false);
               refreshWatchList();
+
             } catch (error) {
               console.error("Error deleting item:", error);
             }
