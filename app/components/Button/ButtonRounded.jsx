@@ -5,7 +5,7 @@ import { COLORS, SIZES } from "../../utils/theme"
 export default function ButtonRounded(props){
 
     return(
-        <Pressable style={styles.button}>
+        <Pressable style={styles.button} onPress={props.onPress}>
             <Ionicons name="add" size={SIZES.sm} color={COLORS.blueDark}></Ionicons>
         </Pressable>
     )
