@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { act, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useWatchlist } from "../contexts/WatchListContext.jsx";
 import { getSavedItems } from "../server/queries.js";
@@ -27,6 +27,18 @@ export default function WatchList(props) {
 
     loadWatchList();
   }, [props.mediaType, activeFilter, refreshToken]);
+
+  if (watchList.length === 0 && activeFilter === "watchlist") {
+    return (
+      <View style={styles.emptyState}>
+          <Text style={globalStyles.subText}>
+            You haven’t saved any items yet.
+          </Text>
+
+
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -75,6 +87,12 @@ export default function WatchList(props) {
 }
 
 const styles = StyleSheet.create({
+  emptyState: {
+    flex: 1,
+    marginTop: 40,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
