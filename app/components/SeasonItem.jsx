@@ -10,6 +10,10 @@ export default function SeasonItem(props) {
     setSeasons(props.seasons || []);
   }, [props.seasons]);
 
+  if(!props.sesons){
+    return null
+  }
+
   return (
     <View style={styles.container}>
       <Text style={globalStyles.heading}>Seasons</Text>
