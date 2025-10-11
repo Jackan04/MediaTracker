@@ -7,6 +7,7 @@ import { getItemDetails } from "../api/tmdb";
 import Button from "../components/Button/Button";
 import Header from "../components/Header";
 import MetaInfoRow from "../components/MetaInfoRow";
+import Overview from "../components/Overview";
 import SeasonItem from "../components/SeasonItem";
 import { usePinnedStatus } from "../contexts/PinnedStatusContext";
 import { useSavedStatus } from "../contexts/SavedStatusContext";
@@ -137,7 +138,10 @@ export default function DetailScreen() {
         ></Button>
         <Button text="TMDB" onPress={OpenUrl(item.homepage)}></Button>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.container}
+      >
         <View style={styles.top}>
           <Image
             style={styles.poster}
@@ -199,10 +203,14 @@ export default function DetailScreen() {
             />
           </View>
         </View>
-        <SeasonItem
-          seasons={item.seasons}
-          episodeCount={item.episodes_count}
-        ></SeasonItem>
+        <View style={styles.bottom}>
+          <Overview overview={item.overview}></Overview>
+
+          <SeasonItem
+            seasons={item.seasons}
+            episodeCount={item.episodes_count}
+          ></SeasonItem>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -213,6 +221,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    gap: SIZES.sm,
+  },
+  bottom: {
+    marginTop: SIZES.sm,
     gap: SIZES.sm,
   },
   poster: {

@@ -51,7 +51,6 @@ export default function SeasonItem(props) {
 const styles = StyleSheet.create({
   container: {
     gap: SIZES.xs,
-    marginTop: SIZES.md,
   },
   card: {
     flexDirection: "row",
@@ -61,7 +60,6 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.border,
     padding: SIZES.xs,
   },
-  season: {},
   episode: {
     fontSize: FONT_SIZES.xs,
     color: COLORS.subText,
@@ -70,10 +68,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    borderWidth: 1,
+    borderBottomWidth: 1,
     borderColor: COLORS.subText,
     paddingVertical: SIZES.buttonVertical,
     paddingHorizontal: SIZES.buttonHorizontal,
     borderRadius: SIZES.radius,
+  },
+  dropdownList: {
+    paddingHorizontal: SIZES.buttonHorizontal,
   },
 });
