@@ -11,17 +11,17 @@ import { usePinnedStatus } from "./contexts/PinnedStatusContext";
 import { useSavedStatus } from "./contexts/SavedStatusContext";
 import { useWatchlist } from "./contexts/WatchListContext";
 import { useWatchStatus } from "./contexts/WatchStatusContext";
-import { OpenUrl } from "./utils/helpers";
 import {
   deleteItem,
   getPinnedState,
+  getSavedItems,
   getWatchState,
   insertItem,
-  isItemSaved,
   togglePinned,
   toggleWatched,
 } from "./server/queries";
 import globalStyles from "./utils/globalStyles";
+import { OpenUrl } from "./utils/helpers";
 import { COLORS, SIZES } from "./utils/theme";
 
 export default function DetailScreen() {
@@ -46,13 +46,11 @@ export default function DetailScreen() {
     if (params.tmdb_id && params.media_type) {
       displayDetails();
     }
-  }, [params.tmdb_id, params.media_type]);
 
-  useEffect(() => {
     const checkIfSaved = async () => {
       if (item && item.tmdb_id) {
         try {
-          const status = await isItemSaved(item.tmdb_id);
+          const status = await getSavedItems(item.tmdb_id);
           updateSavedStatus(item.tmdb_id, Boolean(status));
         } catch (error) {
           console.error("Error checking if item is saved:", error);
@@ -81,6 +79,7 @@ export default function DetailScreen() {
         }
       }
     };
+    displayDetails();
     checkIfSaved();
     checkIfWatched();
     checkIfPinned();
@@ -193,10 +192,7 @@ export default function DetailScreen() {
           icon={pinnedStatus[item.tmdb_id] ? "bookmark" : "bookmark-outline"}
           onPress={handleToggledPinned}
         ></Button>
-        <Button
-          text="TMDB"
-          onPress={OpenUrl(item.homepage)}
-        ></Button>
+        <Button text="TMDB" onPress={OpenUrl(item.homepage)}></Button>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.top}>

@@ -62,7 +62,7 @@ const getSavedItems = async (mediaType, isWatched) => {
   );
 };
 
-const isItemSaved = async (tmdb_id) => {
+const getSavedState = async (tmdb_id) => {
   const db = await getDb();
 
   const item = await db.getFirstAsync(
@@ -182,7 +182,7 @@ export {
   getSavedItems,
   getWatchState,
   insertItem,
-  isItemSaved,
+  getSavedState,
   togglePinned,
   toggleWatched,
 };
