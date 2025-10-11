@@ -10,8 +10,8 @@ export default function SeasonItem(props) {
     setSeasons(props.seasons || []);
   }, [props.seasons]);
 
-  if(!props.sesons){
-    return null
+  if (seasons.length === 0) {
+    return null;
   }
 
   return (
