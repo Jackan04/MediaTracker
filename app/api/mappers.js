@@ -45,7 +45,7 @@ export function mapCast(tmdb) {
 }
 
 export function mapProviders(tmdb) {
-  const logoBaseUrl = `https://image.tmdb.org/t/p/w92`;
+  const logoBaseUrl = `https://image.tmdb.org/t/p/w185`;
 
   return {
     id: tmdb.provider_id,
