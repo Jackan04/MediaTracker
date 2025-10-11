@@ -26,7 +26,7 @@ export default function CastMemberCard(props) {
       <ScrollView
         horizontal={true}
         contentContainerStyle={{
-          gap: 8,
+          gap: 14,
         }}
       >
         {cast.slice(0, 10).map((item, index) => {
@@ -54,16 +54,15 @@ const styles = StyleSheet.create({
   },
   card: {
     width: 90,
-    alignItems: "center",
   },
   profile: {
-    width: 60,
-    height: 90,
+    width: 90,
+    height: 120,
     borderRadius: 8,
     marginBottom: SIZES.xs,
   },
   characterName: {
-    textAlign: "center",
+    textAlign: "left",
     fontSize: FONT_SIZES.xs,
     color: COLORS.textPrimary,
     fontWeight: 500,
@@ -71,7 +70,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   fullName: {
-    textAlign: "center",
+    textAlign: "left",
     fontSize: 10,
     color: COLORS.subText,
     flexWrap: "wrap",

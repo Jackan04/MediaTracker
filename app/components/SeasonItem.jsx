@@ -26,7 +26,7 @@ export default function SeasonItem(props) {
         <View style={styles.dropdown}>
           <Text style={globalStyles.heading}>Seasons</Text>
           <Ionicons
-            name={open ? "arrow-down" : "arrow-forward"}
+            name={open ? "chevron-down" : "chevron-forward"}
             size={FONT_SIZES.lg}
             color={COLORS.heading}
           ></Ionicons>
@@ -51,6 +51,7 @@ export default function SeasonItem(props) {
 const styles = StyleSheet.create({
   container: {
     gap: SIZES.xs,
+    paddingVertical: SIZES.buttonVertical,
   },
   card: {
     flexDirection: "row",
@@ -67,11 +68,8 @@ const styles = StyleSheet.create({
   dropdown: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: SIZES.buttonVertical,
+    gap: SIZES.sm,
     borderRadius: SIZES.radius,
   },
-  dropdownList: {
-    paddingHorizontal: SIZES.buttonHorizontal,
-  },
+  dropdownList: {},
 });
