@@ -23,15 +23,9 @@ export function mapDetails(tmdb, mediaType) {
       : null,
     vote_average:
       typeof tmdb.vote_average === "number" ? tmdb.vote_average : null,
-    runtime_minutes: isMovie ? tmdb.runtime ?? null : null,
+    runtime_minutes: isMovie ? tmdb.runtime : null,
     seasons: !isMovie && tmdb.seasons ? tmdb.seasons : null,
-    episodes_count:
-      !isMovie && tmdb.seasons
-        ? tmdb.seasons.reduce(
-            (total, season) => total + (season.episode_count || 0),
-            0
-          )
-        : null,
+    episodes_count: !isMovie && tmdb.seasons ? tmdb.seasons.episode_count : null,
 
     // These three are stringified for SQLite compatibility
     // Then parsed back to objects/arrays when needed in UI components

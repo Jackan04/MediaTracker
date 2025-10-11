@@ -1,36 +1,47 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import globalStyles from "../utils/globalStyles";
+import { COLORS, FONT_SIZES, SIZES } from "../utils/theme";
 
 export default function SeasonItem(props) {
   const [seasons, setSeasons] = useState([]);
 
   useEffect(() => {
     setSeasons(props.seasons || []);
-  }, [props.seasons]); // Fix: depend on props.seasons, not seasons state
-
-  if (!seasons || seasons.length === 0) {
-    return null; // Don't render anything if no seasons
-  }
+  }, [props.seasons]);
 
   return (
-    <View>
-      {seasons.map((season, index) => (
-        <View style={styles.card} key={index}>
-          <Text style={styles.season}>
-             {season.name}
-          </Text>
-          <Text style={styles.episodes}>Episodes: {season.episode_count}</Text>
-        </View>
-      ))}
+    <View style={styles.container}>
+      <Text style={globalStyles.heading}>Seasons</Text>
+      <View>
+        {seasons.map((season, index) => (
+          <View style={styles.card} key={index}>
+            <Text style={globalStyles.bodyText}>{season.name}</Text>
+            <Text style={styles.episode}>Episodes: {season.episode_count}</Text>
+          </View>
+        ))}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    gap: SIZES.xs,
+    marginTop: SIZES.md,
+  },
   card: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.border,
+    padding: SIZES.xs,
   },
   season: {},
-  episodes: {},
+  episode: {
+    fontSize: FONT_SIZES.xs,
+    color: COLORS.subText
+    
+},
 });
