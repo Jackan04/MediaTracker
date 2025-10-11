@@ -14,7 +14,7 @@ import { useWatchStatus } from "./contexts/WatchStatusContext";
 import {
   deleteItem,
   getPinnedState,
-  getSavedItems,
+  getSavedState,
   getWatchState,
   insertItem,
   togglePinned,
@@ -46,43 +46,27 @@ export default function DetailScreen() {
     if (params.tmdb_id && params.media_type) {
       displayDetails();
     }
+  }, [params.tmdb_id, params.media_type]);
 
-    const checkIfSaved = async () => {
-      if (item && item.tmdb_id) {
-        try {
-          const status = await getSavedItems(item.tmdb_id);
-          updateSavedStatus(item.tmdb_id, Boolean(status));
-        } catch (error) {
-          console.error("Error checking if item is saved:", error);
-        }
+  useEffect(() => {
+    if (!item) return;
+
+    const getStates = async () => {
+      try {
+        const [saved, watched, pinned] = await Promise.all([
+          getSavedState(item.tmdb_id),
+          getWatchState(item.tmdb_id),
+          getPinnedState(item.tmdb_id),
+        ]);
+        updateSavedStatus(item.tmdb_id, Boolean(saved));
+        updateWatchStatus(item.tmdb_id, Boolean(watched));
+        updatePinnedStatus(item.tmdb_id, Boolean(pinned));
+      } catch (error) {
+        console.error("Failed to retrieve item states:", error);
       }
     };
 
-    const checkIfWatched = async () => {
-      if (item && item.tmdb_id) {
-        try {
-          const status = await getWatchState(item.tmdb_id);
-          updateWatchStatus(item.tmdb_id, Boolean(status));
-        } catch (error) {
-          console.error("Error checking if item is watched:", error);
-        }
-      }
-    };
-
-    const checkIfPinned = async () => {
-      if (item && item.tmdb_id) {
-        try {
-          const status = await getPinnedState(item.tmdb_id);
-          updatePinnedStatus(item.tmdb_id, Boolean(status));
-        } catch (error) {
-          console.error("Error checking if item is pinned:", error);
-        }
-      }
-    };
-    displayDetails();
-    checkIfSaved();
-    checkIfWatched();
-    checkIfPinned();
+    getStates();
   }, [item]);
 
   const handleDelete = async () => {
@@ -127,8 +111,8 @@ export default function DetailScreen() {
 
   const handleToggledWatched = async () => {
     try {
-      if (savedStatus[item.tmdb_id] === false) {
-        handleSave(item); // Save item if it isn't already saved
+      if (!savedStatus[item.tmdb_id]) {
+        await handleSave(); // Save item if it isn't already saved
       }
 
       const newStatus = await toggleWatched(
@@ -144,8 +128,8 @@ export default function DetailScreen() {
 
   const handleToggledPinned = async () => {
     try {
-      if (savedStatus[item.tmdb_id] === false) {
-        handleSave(item); // Save item if it isn't already saved
+      if (!savedStatus[item.tmdb_id]) {
+        await handleSave(); // Save item if it isn't already saved
       }
       const newStatus = await togglePinned(
         item.tmdb_id,
