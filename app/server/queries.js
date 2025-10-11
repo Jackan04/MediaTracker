@@ -159,7 +159,7 @@ const toggleWatched = async (tmdb_id, isWatched) => {
   const db = await getDb();
   const newValue = isWatched ? 0 : 1;
   await db.runAsync(
-    "UPDATE items SET watched = ? AND pinned = ? WHERE tmdb_id = ?",
+    "UPDATE items SET watched = ?, pinned = ? WHERE tmdb_id = ?",
     [newValue, 0, tmdb_id]
   );
   return newValue;
@@ -180,9 +180,9 @@ export {
   getPinnedItems,
   getPinnedState,
   getSavedItems,
+  getSavedState,
   getWatchState,
   insertItem,
-  getSavedState,
   togglePinned,
   toggleWatched,
 };

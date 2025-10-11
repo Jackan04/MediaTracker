@@ -204,7 +204,6 @@ export default function DetailScreen() {
         </View>
         <View style={styles.bottom}>
           <Overview overview={item.overview}></Overview>
-
           <SeasonItem
             seasons={item.seasons}
             episodeCount={item.episodes_count}
@@ -213,7 +212,10 @@ export default function DetailScreen() {
             tmdb_id={item.tmdb_id}
             media_type={item.media_type}
           ></CastList>
-          <WatchProviders tmdb_id={item.tmdb_id} media_type={item.media_type}></WatchProviders>
+          <WatchProviders
+            tmdb_id={item.tmdb_id}
+            media_type={item.media_type}
+          ></WatchProviders>
         </View>
       </ScrollView>
     </SafeAreaView>
