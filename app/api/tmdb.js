@@ -95,33 +95,3 @@ export async function getItemDetails(id, mediaType){
     }
     
 }
-
-// export async function getMovieDetails(id){
-
-//     try{
-//         const response = await fetch(`https://api.themoviedb.org/3/movie/${id}`, options)
-//         const json = await response.json()
-//         const movie = mapDetails(json, 'movie')
-        
-//         return movie
-//     }
-//     catch(error){
-//         console.error(`Error: ${error.message}`)
-//     }
-    
-// }
-
-// export async function getShowDetails(id){
-
-//     try{
-//         const response = await fetch(`https://api.themoviedb.org/3/tv/${id}`, options)
-//         const json = await response.json()
-//         const show = mapDetails(json, 'tv')
-        
-//         return show
-//     }
-//     catch(error){
-//         console.error(`Error: ${error.message}`)
-//     }
-    
-// }

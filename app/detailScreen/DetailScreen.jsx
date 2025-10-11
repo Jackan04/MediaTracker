@@ -156,7 +156,7 @@ export default function DetailScreen() {
                 : ""
             } // Round to one decimal  and display an empty string if the value is zero
             genre={JSON.parse(item.genres_json)
-              .slice(0, 3)
+              .slice(0, 2)
               .map((genre) => genre.name)
               .join(", ")} // Parse JSON and limit to 3 genres
             rating={Math.round(item.vote_average * 10) / 10}

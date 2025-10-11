@@ -21,8 +21,7 @@ export function mapDetails(tmdb, mediaType) {
     poster_path: tmdb.poster_path
       ? `${posterBaseUrl}${tmdb.poster_path}`
       : null,
-    vote_average:
-      typeof tmdb.vote_average === "number" ? tmdb.vote_average : null,
+    vote_average: tmdb.vote_average ? tmdb.vote_average : null,
     runtime_minutes: isMovie ? tmdb.runtime : null,
     seasons: !isMovie && tmdb.seasons ? tmdb.seasons : null,
     episodes_count: !isMovie && tmdb.seasons ? tmdb.seasons.episode_count : null,
