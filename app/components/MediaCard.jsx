@@ -14,7 +14,7 @@ export default function MediaCard(props){
         
         // Pass the 'id' and 'media_type' parameters to the function on the DetailScreen page to retrieve the relevant details.
         router.push({
-            pathname: '/DetailScreen',
+            pathname: '/detailScreen/DetailScreen',
             params: { 
                 tmdb_id: props.item.tmdb_id,
                 media_type: props.item.media_type

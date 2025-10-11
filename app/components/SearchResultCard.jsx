@@ -13,12 +13,12 @@ export default function SearchResultCard(props){
         
         // Pass the 'id' and 'media_type' parameters to DisplayDetails() on the DetailScreen page to retrieve the relevant details
         router.push({
-        pathname: '/DetailScreen',
-        params: { 
-             tmdb_id: props.item.tmdb_id,
-            media_type: props.item.media_type
-        }
-    });
+          pathname: "/detailScreen/DetailScreen",
+          params: {
+            tmdb_id: props.item.tmdb_id,
+            media_type: props.item.media_type,
+          },
+        });
     }
 
     return(

@@ -1,28 +1,26 @@
 import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { getItemDetails } from "./api/tmdb";
-import Button from "./components/Button/Button";
-import Header from "./components/Header";
-import MetaInfoRow from "./components/MetaInfoRow";
-import { usePinnedStatus } from "./contexts/PinnedStatusContext";
-import { useSavedStatus } from "./contexts/SavedStatusContext";
-import { useWatchlist } from "./contexts/WatchListContext";
-import { useWatchStatus } from "./contexts/WatchStatusContext";
+import { getItemDetails } from "../api/tmdb";
+import Button from "../components/Button/Button";
+import Header from "../components/Header";
+import MetaInfoRow from "../components/MetaInfoRow";
+import { usePinnedStatus } from "../contexts/PinnedStatusContext";
+import { useSavedStatus } from "../contexts/SavedStatusContext";
+import { useWatchlist } from "../contexts/WatchListContext";
+import { useWatchStatus } from "../contexts/WatchStatusContext";
 import {
-  deleteItem,
-  getPinnedState,
-  getSavedState,
-  getWatchState,
-  insertItem,
-  togglePinned,
-  toggleWatched,
-} from "./server/queries";
-import globalStyles from "./utils/globalStyles";
-import { OpenUrl } from "./utils/helpers";
-import { COLORS, SIZES } from "./utils/theme";
+  createHandleDelete,
+  createHandleSave,
+  createHandleToggledPinned,
+  createHandleToggledWatched,
+  OpenUrl,
+} from "./detailScreenHelpers";
+import { getPinnedState, getSavedState, getWatchState } from "../server/queries";
+import globalStyles from "../utils/globalStyles";
+import { COLORS, SIZES } from "../utils/theme";
 
 export default function DetailScreen() {
   const params = useLocalSearchParams();
@@ -69,80 +67,36 @@ export default function DetailScreen() {
     getStates();
   }, [item]);
 
-  const handleDelete = async () => {
-    if (watchStatus[item.tmdb_id]) {
-      alert("Please mark the item as unwatched before deleting it.");
-      return;
-    }
-    Alert.alert(
-      "Remove from Library",
-      "Are you sure you want to remove this item from your library?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Remove",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              await deleteItem(item.tmdb_id);
-              updateSavedStatus(item.tmdb_id, false);
-              updatePinnedStatus(item.tmdb_id, false);
-              refreshWatchList();
-            } catch (error) {
-              console.error("Error deleting item:", error);
-            }
-          },
-        },
-      ]
-    );
-  };
-  const handleSave = async () => {
-    try {
-      await insertItem(item);
-      updateSavedStatus(item.tmdb_id, true);
-      refreshWatchList();
-    } catch (error) {
-      console.error("Error saving item:", error);
-    }
-  };
-
-  const handleToggledWatched = async () => {
-    try {
-      if (!savedStatus[item.tmdb_id]) {
-        await handleSave(); // Save item if it isn't already saved
-      }
-
-      const newStatus = await toggleWatched(
-        item.tmdb_id,
-        watchStatus[item.tmdb_id]
-      );
-      updateWatchStatus(item.tmdb_id, Boolean(newStatus));
-      refreshWatchList();
-    } catch (error) {
-      console.error("Error toggling watch state:", error);
-    }
-  };
-
-  const handleToggledPinned = async () => {
-    try {
-      if (!savedStatus[item.tmdb_id]) {
-        await handleSave(); // Save item if it isn't already saved
-      }
-      const newStatus = await togglePinned(
-        item.tmdb_id,
-        pinnedStatus[item.tmdb_id],
-        watchStatus[item.tmdb_id]
-      );
-
-      updatePinnedStatus(item.tmdb_id, Boolean(newStatus));
-      refreshWatchList();
-    } catch (error) {
-      console.error("Error toggling pinned state:", error);
-    }
-  };
+  // Handler functions from "detailScreenHelper.js"
+  const handleSave = createHandleSave(
+    item,
+    updateSavedStatus,
+    refreshWatchList
+  );
+  const handleDelete = createHandleDelete(
+    item,
+    watchStatus,
+    updateSavedStatus,
+    updatePinnedStatus,
+    refreshWatchList
+  );
+  const handleToggledWatched = createHandleToggledWatched(
+    item,
+    savedStatus,
+    watchStatus,
+    updateWatchStatus,
+    refreshWatchList,
+    handleSave
+  );
+  const handleToggledPinned = createHandleToggledPinned(
+    item,
+    savedStatus,
+    pinnedStatus,
+    watchStatus,
+    updatePinnedStatus,
+    refreshWatchList,
+    handleSave
+  );
 
   if (!item) {
     return (
@@ -247,8 +201,7 @@ export default function DetailScreen() {
 
 const styles = StyleSheet.create({
   top: {
-    flex: 1,
-
+    flex: 1, 
     alignItems: "center",
     justifyContent: "center",
     gap: SIZES.sm,
