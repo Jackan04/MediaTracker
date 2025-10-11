@@ -7,10 +7,18 @@ import { getItemDetails } from "../api/tmdb";
 import Button from "../components/Button/Button";
 import Header from "../components/Header";
 import MetaInfoRow from "../components/MetaInfoRow";
+import SeasonItem from "../components/SeasonItem";
 import { usePinnedStatus } from "../contexts/PinnedStatusContext";
 import { useSavedStatus } from "../contexts/SavedStatusContext";
 import { useWatchlist } from "../contexts/WatchListContext";
 import { useWatchStatus } from "../contexts/WatchStatusContext";
+import {
+  getPinnedState,
+  getSavedState,
+  getWatchState,
+} from "../server/queries";
+import globalStyles from "../utils/globalStyles";
+import { COLORS, SIZES } from "../utils/theme";
 import {
   createHandleDelete,
   createHandleSave,
@@ -18,9 +26,6 @@ import {
   createHandleToggledWatched,
   OpenUrl,
 } from "./detailScreenHelpers";
-import { getPinnedState, getSavedState, getWatchState } from "../server/queries";
-import globalStyles from "../utils/globalStyles";
-import { COLORS, SIZES } from "../utils/theme";
 
 export default function DetailScreen() {
   const params = useLocalSearchParams();
@@ -194,6 +199,10 @@ export default function DetailScreen() {
             />
           </View>
         </View>
+        <SeasonItem
+          seasons={item.seasons}
+          episodeCount={item.episodes_count}
+        ></SeasonItem>
       </ScrollView>
     </SafeAreaView>
   );
@@ -201,7 +210,7 @@ export default function DetailScreen() {
 
 const styles = StyleSheet.create({
   top: {
-    flex: 1, 
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
     gap: SIZES.sm,
