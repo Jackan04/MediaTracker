@@ -29,7 +29,17 @@ export function mapDetails(tmdb, mediaType) {
     // These three are stringified for SQLite compatibility
     // Then parsed back to objects/arrays when needed in UI components
     genres_json: JSON.stringify(tmdb.genres || []),
-    providers_json: JSON.stringify(tmdb?.["watch/providers"]?.results || {}),
-    cast_json: JSON.stringify(tmdb?.credits?.cast || []),
+  };
+}
+
+export function mapCast(tmdb, mediaType) {
+  const profileBaseUrl = "https://image.tmdb.org/t/p/w185";
+
+  return {
+    id: tmdb.id,
+    media_type: mediaType,
+    name: tmdb.name,
+    character: tmdb.character,
+    profile: `${profileBaseUrl}${tmdb.profile_path}`,
   };
 }

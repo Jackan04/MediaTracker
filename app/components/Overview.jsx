@@ -14,7 +14,6 @@ export default function Overview(props) {
 const styles = StyleSheet.create({
   overview: {
     gap: SIZES.xs,
-    paddingVertical: SIZES.buttonVertical,
-    paddingHorizontal: SIZES.buttonHorizontal,
+  
   },
 });

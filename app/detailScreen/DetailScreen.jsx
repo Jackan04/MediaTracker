@@ -5,6 +5,7 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getItemDetails } from "../api/tmdb";
 import Button from "../components/Button/Button";
+import CastMemberCard from "../components/CastList";
 import Header from "../components/Header";
 import MetaInfoRow from "../components/MetaInfoRow";
 import Overview from "../components/Overview";
@@ -138,10 +139,7 @@ export default function DetailScreen() {
         ></Button>
         <Button text="TMDB" onPress={OpenUrl(item.homepage)}></Button>
       </View>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={styles.container}
-      >
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
         <View style={styles.top}>
           <Image
             style={styles.poster}
@@ -150,7 +148,7 @@ export default function DetailScreen() {
             contentFit="cover"
           />
 
-          <Text style={[globalStyles.title]}>{item.title}</Text>
+          <Text style={[globalStyles.title, styles.title]}>{item.title}</Text>
           <MetaInfoRow
             style={styles.metaInfoRow}
             year={item.year}
@@ -210,6 +208,10 @@ export default function DetailScreen() {
             seasons={item.seasons}
             episodeCount={item.episodes_count}
           ></SeasonItem>
+          <CastMemberCard
+            tmdb_id={item.tmdb_id}
+            media_type={item.media_type}
+          ></CastMemberCard>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -223,9 +225,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: SIZES.sm,
   },
+  title: {
+    textAlign: "center",
+  },
   bottom: {
     marginTop: SIZES.sm,
     gap: SIZES.sm,
+    paddingVertical: SIZES.buttonVertical,
+    paddingHorizontal: SIZES.buttonHorizontal,
   },
   poster: {
     width: 200,
