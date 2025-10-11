@@ -24,7 +24,8 @@ export function mapDetails(tmdb, mediaType) {
     vote_average: tmdb.vote_average ? tmdb.vote_average : null,
     runtime_minutes: isMovie ? tmdb.runtime : null,
     seasons: !isMovie && tmdb.seasons ? tmdb.seasons : null,
-    episodes_count: !isMovie && tmdb.seasons ? tmdb.seasons.episode_count : null,
+    episodes_count:
+      !isMovie && tmdb.seasons ? tmdb.seasons.episode_count : null,
 
     // These three are stringified for SQLite compatibility
     // Then parsed back to objects/arrays when needed in UI components
@@ -32,14 +33,23 @@ export function mapDetails(tmdb, mediaType) {
   };
 }
 
-export function mapCast(tmdb, mediaType) {
+export function mapCast(tmdb) {
   const profileBaseUrl = "https://image.tmdb.org/t/p/w185";
 
   return {
     id: tmdb.id,
-    media_type: mediaType,
     name: tmdb.name,
     character: tmdb.character,
     profile: `${profileBaseUrl}${tmdb.profile_path}`,
+  };
+}
+
+export function mapProviders(tmdb) {
+  const logoBaseUrl = `https://image.tmdb.org/t/p/w92`;
+
+  return {
+    id: tmdb.provider_id,
+    name: tmdb.provider_name,
+    logo: `${logoBaseUrl}${tmdb.logo_path}`,
   };
 }

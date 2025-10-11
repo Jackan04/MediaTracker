@@ -1,4 +1,4 @@
-import { mapCast, mapDetails } from "./mappers";
+import { mapCast, mapDetails, mapProviders } from "./mappers";
 
 const options = {
   method: "GET",
@@ -126,8 +126,39 @@ export async function getProviders(tmdb_id, media_type) {
       options
     );
     const json = await response.json();
-    return json.results;
+
+    // Get Swedish providers for all three categories
+    const swedenProviders = json.results?.SE;
+
+    if (!swedenProviders) {
+      return { stream: [], buy: [], rent: [] }; 
+    }
+    
+    const streamProviders =
+      swedenProviders.flatrate?.map((item) => ({
+        ...mapProviders(item),
+        type: "stream",
+      })) || [];
+
+    const buyProviders =
+      swedenProviders.buy?.map((item) => ({
+        ...mapProviders(item),
+        type: "buy",
+      })) || [];
+
+    const rentProviders =
+      swedenProviders.rent?.map((item) => ({
+        ...mapProviders(item),
+        type: "rent",
+      })) || [];
+
+    return {
+      stream: streamProviders,
+      buy: buyProviders,
+      rent: rentProviders,
+    };
   } catch (error) {
     console.error(`Error: ${error.message}`);
+    return { stream: [], buy: [], rent: [] }; // Return empty arrays on error
   }
 }

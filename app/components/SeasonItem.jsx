@@ -68,10 +68,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    borderBottomWidth: 1,
-    borderColor: COLORS.subText,
     paddingVertical: SIZES.buttonVertical,
-    paddingHorizontal: SIZES.buttonHorizontal,
     borderRadius: SIZES.radius,
   },
   dropdownList: {

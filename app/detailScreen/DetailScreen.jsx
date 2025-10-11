@@ -5,11 +5,12 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getItemDetails } from "../api/tmdb";
 import Button from "../components/Button/Button";
-import CastMemberCard from "../components/CastList";
+import CastList from "../components/CastList";
 import Header from "../components/Header";
 import MetaInfoRow from "../components/MetaInfoRow";
 import Overview from "../components/Overview";
 import SeasonItem from "../components/SeasonItem";
+import WatchProviders from "../components/WatchProviders";
 import { usePinnedStatus } from "../contexts/PinnedStatusContext";
 import { useSavedStatus } from "../contexts/SavedStatusContext";
 import { useWatchlist } from "../contexts/WatchListContext";
@@ -208,10 +209,11 @@ export default function DetailScreen() {
             seasons={item.seasons}
             episodeCount={item.episodes_count}
           ></SeasonItem>
-          <CastMemberCard
+          <CastList
             tmdb_id={item.tmdb_id}
             media_type={item.media_type}
-          ></CastMemberCard>
+          ></CastList>
+          <WatchProviders tmdb_id={item.tmdb_id} media_type={item.media_type}></WatchProviders>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -230,7 +232,7 @@ const styles = StyleSheet.create({
   },
   bottom: {
     marginTop: SIZES.sm,
-    gap: SIZES.sm,
+    gap: SIZES.md,
     paddingVertical: SIZES.buttonVertical,
     paddingHorizontal: SIZES.buttonHorizontal,
   },

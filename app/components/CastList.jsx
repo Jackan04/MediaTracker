@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: 90,
+    alignItems: "center",
   },
   profile: {
     width: 60,
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     marginBottom: SIZES.xs,
   },
   characterName: {
-    textAlign: "left",
+    textAlign: "center",
     fontSize: FONT_SIZES.xs,
     color: COLORS.textPrimary,
     fontWeight: 500,
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   fullName: {
-    textAlign: "left",
+    textAlign: "center",
     fontSize: 10,
     color: COLORS.subText,
     flexWrap: "wrap",
