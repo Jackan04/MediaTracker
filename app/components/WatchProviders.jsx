@@ -66,10 +66,10 @@ export default function WatchallProviders(props) {
 
   return (
     <View style={styles.container}>
-      <Text style={globalStyles.heading}>Providers</Text>
+      <Text style={globalStyles.heading}>Watch Providers</Text>
       {renderProviderSection("Stream", providers.stream)}
-      {renderProviderSection("Buy", providers.buy)}
       {renderProviderSection("Rent", providers.rent)}
+      {renderProviderSection("Buy", providers.buy)}
     </View>
   );
 }
@@ -78,9 +78,6 @@ const styles = StyleSheet.create({
   container: {
     gap: SIZES.sm,
   },
-  section: {
-    marginBottom: SIZES.sm,
-  },
   sectionTitle: {
     fontSize: FONT_SIZES.sm,
     fontWeight: "500",
@@ -88,7 +85,7 @@ const styles = StyleSheet.create({
     marginBottom: SIZES.xs,
   },
   card: {
-    width: 90,
+    width: 60,
   },
   logo: {
     width: 60,
