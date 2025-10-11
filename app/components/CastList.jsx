@@ -11,7 +11,6 @@ export default function CastMemberCard(props) {
     const loadCast = async () => {
       try {
         const result = await getCast(props.tmdb_id, props.media_type);
-        console.log(result);
         setCast(result);
       } catch (error) {
         console.error("Error getting cast: ", error);
