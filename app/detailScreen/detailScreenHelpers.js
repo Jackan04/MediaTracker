@@ -1,5 +1,6 @@
-import { Alert } from "react-native";
-import { Linking } from "react-native";
+import * as Haptics from "expo-haptics";
+import { Alert, Linking } from "react-native";
+
 import {
   deleteItem,
   insertItem,
@@ -17,7 +18,6 @@ export const OpenUrl = (url) => {
   };
 };
 
-
 export const createHandleDelete = (
   item,
   watchStatus,
@@ -27,6 +27,7 @@ export const createHandleDelete = (
 ) => {
   return async () => {
     if (watchStatus[item.tmdb_id]) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       alert("Please mark the item as unwatched before deleting it.");
       return;
     }
@@ -44,6 +45,7 @@ export const createHandleDelete = (
           onPress: async () => {
             try {
               await deleteItem(item.tmdb_id);
+              Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
               updateSavedStatus(item.tmdb_id, false);
               updatePinnedStatus(item.tmdb_id, false);
               refreshWatchList();
