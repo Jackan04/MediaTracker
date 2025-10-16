@@ -29,6 +29,7 @@ export default function SearchScreen() {
 
       setSearchResults(results || []);
     } catch (error) {
+      alert("Search failed:", error);
       console.error("Search failed:", error);
     }
   };
