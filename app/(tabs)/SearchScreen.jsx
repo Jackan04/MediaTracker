@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { searchByMediaType, searchMedia } from "../api/tmdb";
 import Button from "../components/Button/Button";
 import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 import SearchResultCard from "../components/SearchResultCard.jsx";
+import { useLoadingStatus } from "../contexts/LoadingStatusContext.jsx";
 import globalStyles from "../utils/globalStyles";
 import { COLORS, SIZES } from "../utils/theme";
 
@@ -13,9 +14,12 @@ export default function SearchScreen() {
   const [query, setQuery] = useState("");
   const [searchFilter, setSearchFilter] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const { loadingStatus, updateLoadingStatus } = useLoadingStatus();
 
   const handleOnSubmit = async () => {
     if (!query.trim()) return;
+
+    updateLoadingStatus(true);
 
     try {
       let results;
@@ -31,8 +35,18 @@ export default function SearchScreen() {
     } catch (error) {
       alert("Search failed:", error);
       console.error("Search failed:", error);
+    } finally {
+      updateLoadingStatus(false);
     }
   };
+
+  if (loadingStatus) {
+    return (
+      <SafeAreaView style={styles.loading}>
+        <Text style={globalStyles.heading}>Loading...</Text>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView
@@ -93,14 +107,13 @@ export default function SearchScreen() {
 }
 
 const styles = StyleSheet.create({
-  results: {},
   buttons: {
     flexDirection: "row",
     justifyContent: "space-evenly",
   },
-  hint: {
-    textAlign: "center",
-    color: COLORS.subText,
-    marginVertical: 12,
+  loading: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

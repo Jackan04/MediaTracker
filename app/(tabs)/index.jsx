@@ -5,49 +5,55 @@ import { getTrendingMovies, getTrendingShows } from "../api/tmdb.js";
 import Button from "../components/Button/Button.jsx";
 import Header from "../components/Header.jsx";
 import MediaCard from "../components/MediaCard.jsx";
+import { useLoadingStatus } from "../contexts/LoadingStatusContext.jsx";
 import { initDb } from "../server/db.js";
-import globalStyles from '../utils/globalStyles.js';
+import globalStyles from "../utils/globalStyles.js";
 import { COLORS, SIZES } from "../utils/theme.js";
 
 export default function Index() {
+  const [trendingMovies, setTrendingMovies] = useState([]);
+  const [trendingShows, setTrendingShows] = useState([]);
+  const [activeFilter, setActiveFilter] = useState("movie");
+  const { loadingStatus, updateLoadingStatus } = useLoadingStatus();
 
-  const[trendingMovies, setTrendingMovies] = useState([])
-  const[trendingShows, setTrendingShows] = useState([])
-  const[activeFilter, setActiveFilter] = useState("movie")
-
-   useEffect(() => {
-      const loadData = async () => {
-          try {
-            await initDb()
-          } catch (error) {
-            console.error("Error initializing database:", error)
-          }
-        };
-        loadData();
-   }, [])
-
-   useEffect(() => {
-      
-    const loadTrendingItems = async () =>{
-        
-      try{
-          if(activeFilter === "movie"){
-            const movies = await getTrendingMovies() 
-            setTrendingMovies(movies)
-          }
-          else{
-            const shows = await getTrendingShows() 
-            setTrendingShows(shows)
-          }
-            
-        }
-        catch(error){
-          console.error("Error when loading trending items", error)
-        }
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        await initDb();
+      } catch (error) {
+        console.error("Error initializing database:", error);
       }
-      loadTrendingItems()
+    };
+    loadData();
+  }, []);
 
-   }, [activeFilter])
+  useEffect(() => {
+    const loadTrendingItems = async () => {
+      updateLoadingStatus(true);
+      try {
+        if (activeFilter === "movie") {
+          const movies = await getTrendingMovies();
+          setTrendingMovies(movies);
+        } else {
+          const shows = await getTrendingShows();
+          setTrendingShows(shows);
+        }
+      } catch (error) {
+        console.error("Error when loading trending items", error);
+      } finally {
+        updateLoadingStatus(false);
+      }
+    };
+    loadTrendingItems();
+  }, [activeFilter]);
+
+  if (loadingStatus) {
+    return (
+      <SafeAreaView style={styles.loading}>
+        <Text style={globalStyles.heading}>Loading...</Text>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView
@@ -107,22 +113,25 @@ export default function Index() {
 }
 
 const styles = StyleSheet.create({
-      filterHeader:{
-        flexDirection:"row",
-        justifyContent:"space-between",
-        alignItems: "center",
-        gap: SIZES.sm,
-
-      },
-      heading:{
-        flexWrap: "wrap",
-      },
-      row:{
-        justifyContent: "space-between",
-      },
-      buttons:{
-        flexDirection:"row",
-        gap: SIZES.sm,
-    }
-      
-})
+  filterHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: SIZES.sm,
+  },
+  heading: {
+    flexWrap: "wrap",
+  },
+  row: {
+    justifyContent: "space-between",
+  },
+  buttons: {
+    flexDirection: "row",
+    gap: SIZES.sm,
+  },
+  loading:{
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  }
+});

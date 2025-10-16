@@ -11,6 +11,7 @@ import MetaInfoRow from "../components/MetaInfoRow";
 import Overview from "../components/Overview";
 import SeasonItem from "../components/SeasonItem";
 import WatchProviders from "../components/WatchProviders";
+import { useLoadingStatus } from "../contexts/LoadingStatusContext.jsx";
 import { usePinnedStatus } from "../contexts/PinnedStatusContext";
 import { useSavedStatus } from "../contexts/SavedStatusContext";
 import { useWatchlist } from "../contexts/WatchListContext";
@@ -38,14 +39,19 @@ export default function DetailScreen() {
   const { watchStatus, updateWatchStatus } = useWatchStatus();
   const { savedStatus, updateSavedStatus } = useSavedStatus();
   const { pinnedStatus, updatePinnedStatus } = usePinnedStatus();
+  const { loadingStatus, updateLoadingStatus } = useLoadingStatus();
 
   useEffect(() => {
     const displayDetails = async () => {
+      updateLoadingStatus(true);
+
       try {
         const result = await getItemDetails(params.tmdb_id, params.media_type);
         setItem(result);
       } catch (error) {
         console.error("Error fetching details:", error);
+      } finally {
+        updateLoadingStatus(false);
       }
     };
 
@@ -106,16 +112,19 @@ export default function DetailScreen() {
     handleSave
   );
 
+  if (loadingStatus) {
+    return (
+      <SafeAreaView style={styles.loading}>
+        <Text style={globalStyles.heading}>Loading...</Text>
+      </SafeAreaView>
+    );
+  }
+
   if (!item) {
     return (
-      <SafeAreaView
-        style={globalStyles.container}
-        edges={["left", "right", "bottom", "top"]}
-      >
+      <SafeAreaView style={globalStyles.container}>
         <Header title="Details" />
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
+        <View style={styles.error}>
           <Text>Error loading details</Text>
         </View>
       </SafeAreaView>
@@ -250,5 +259,14 @@ const styles = StyleSheet.create({
   mediaButtons: {
     flexDirection: "row",
     gap: SIZES.sm,
+  },
+  loading: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  error: {
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
