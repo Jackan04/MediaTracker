@@ -55,9 +55,9 @@ export default function DetailScreen() {
       }
     };
 
-    if (params.tmdb_id && params.media_type) {
+
       displayDetails();
-    }
+    
   }, [params.tmdb_id, params.media_type]);
 
   useEffect(() => {
