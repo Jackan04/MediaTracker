@@ -140,11 +140,13 @@ export default function DetailScreen() {
           icon="arrow-back"
           onPress={() => router.back()}
         ></Button>
-        <Button
-          icon={pinnedStatus[item.tmdb_id] ? "bookmark" : "bookmark-outline"}
-          onPress={handleToggledPinned}
-        ></Button>
-        <Button text="TMDB" onPress={OpenUrl(item.homepage)}></Button>
+        <View style={{flexDirection:"row", gap: SIZES.sm}}>
+          <Button text="TMDB" onPress={OpenUrl(item.homepage)}></Button>
+          <Button
+            icon={pinnedStatus[item.tmdb_id] ? "bookmark" : "bookmark-outline"}
+            onPress={handleToggledPinned}
+          ></Button>
+        </View>
       </View>
       <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
         <View style={styles.top}>
