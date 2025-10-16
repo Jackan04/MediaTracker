@@ -31,11 +31,19 @@ Media Tracker is a React Native app built with Expo and expo-router. It integrat
   - Loading states via context
   - Haptic feedback on button presses and on success or error
 
-Screenshots (replace with real images):
+## Screenshots:
 
-![Home](https://via.placeholder.com/900x500?text=Home+Screen)
-![Details](https://via.placeholder.com/900x500?text=Details+Screen)
-![Search](https://via.placeholder.com/900x500?text=Search+Screen)
+<p align="center">
+  <img src="./assets/screenshots/screenshot-home.png" alt="Home" width="250"/>
+  <img src="./assets/screenshots/screenshot-search.png" alt="Search" width="250"/>
+  <img src="./assets/screenshots/screenshot-library.png" alt="Library" width="250"/>
+</p>
+
+<p align="center">
+  <img src="./assets/screenshots/screenshot-details-1.png" alt="Details 1" width="250"/>
+  <img src="./assets/screenshots/screenshot-details-2.png" alt="Details 2" width="250"/>
+  <img src="./assets/screenshots/screenshot-details-3.png" alt="Details 3" width="250"/>
+</p>
 
 ## Tech Stack
 
