@@ -54,8 +54,6 @@ export default function DetailScreen() {
         updateLoadingStatus(false);
       }
     };
-
-
       displayDetails();
     
   }, [params.tmdb_id, params.media_type]);
@@ -166,7 +164,8 @@ export default function DetailScreen() {
               item.media_type === "movie"
                 ? Math.round((item.runtime_minutes / 60) * 10) / 10 + " h"
                 : ""
-            } // Round to one decimal  and display an empty string if the value is zero
+              // Round to one decimal  and display an empty string if the value is zero
+            }
             genre={JSON.parse(item.genres_json)
               .slice(0, 2)
               .map((genre) => genre.name)
