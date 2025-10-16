@@ -1,11 +1,21 @@
 import { Ionicons } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { COLORS, SIZES } from "../../utils/theme";
 
 export default function Button(props) {
+  const handlePress = () => {
+
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+
+    if (props.onPress) {
+      props.onPress();
+    }
+  };
+
   return (
     <Pressable
-      onPress={props.onPress}
+      onPress={handlePress}
       style={[
         styles.button,
         { backgroundColor: props.buttonBgColor || COLORS.blueLight },
@@ -52,5 +62,4 @@ const styles = StyleSheet.create({
   buttonText: {
     fontWeight: "500",
   },
-
 });

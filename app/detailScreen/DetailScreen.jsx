@@ -54,8 +54,7 @@ export default function DetailScreen() {
         updateLoadingStatus(false);
       }
     };
-      displayDetails();
-    
+    displayDetails();
   }, [params.tmdb_id, params.media_type]);
 
   useEffect(() => {
@@ -193,14 +192,7 @@ export default function DetailScreen() {
                   ? "Toggle Unwatched"
                   : "Toggle Watched"
               }
-              onPress={
-                savedStatus
-                  ? handleToggledWatched
-                  : () =>
-                      alert(
-                        "Please save the item before changing its watch status."
-                      )
-              }
+              onPress={handleToggledWatched}
               buttonTextColor={
                 watchStatus[item.tmdb_id] ? COLORS.redDark : COLORS.greenDark
               }

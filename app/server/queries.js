@@ -1,3 +1,4 @@
+import * as Haptics from "expo-haptics";
 import { getDb } from "./db.js";
 
 const insertItem = async (item) => {
@@ -118,6 +119,7 @@ const getPinnedState = async (tmdb_id) => {
 const togglePinned = async (tmdb_id, isPinned, isWatched) => {
   if (!tmdb_id) throw new Error("tmdb_id is required");
   if (isWatched) {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
     alert("This item is marked as watched. Watched items can't be pinned.");
     return;
   }
@@ -138,6 +140,7 @@ const togglePinned = async (tmdb_id, isPinned, isWatched) => {
 
     // Limit pinned items to 3 per media type
     if (currentlyPinnedItems.length >= 3) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       alert(
         "You can only pin up to 3 items. Please unpin one before adding another."
       );
@@ -161,7 +164,9 @@ const toggleWatched = async (tmdb_id, isWatched) => {
   await db.runAsync(
     "UPDATE items SET watched = ?, pinned = ? WHERE tmdb_id = ?",
     [newValue, 0, tmdb_id]
+    
   );
+  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
   return newValue;
 };
 
