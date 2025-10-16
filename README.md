@@ -1,50 +1,125 @@
-# Welcome to your Expo app 👋
+# MediaTracker
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Track movies and TV shows you want to watch. Search, save, pin, mark as watched, and view details like cast, seasons, and where to watch.
 
-## Get started
+## Overview
 
-1. Install dependencies
+Media Tracker is a React Native app built with Expo and expo-router. It integrates with the TMDB API for data and uses a local SQLite database to make your library fast and accessible offline. It’s a clean, minimal media tracker optimized to run on iOS and Android.
 
-   ```bash
-   npm install
-   ```
+- Search across movies and TV shows
+- Browse trending content
+- View details (e.g., overview, year, runtime, genres, cast, seasons)
+- See watch providers (stream, buy, rent) (Region set to Sweden)
+- Save items to your library, pin items you plan to watch next or are currently watching, and mark them as watched
+- Toggle between active watchlist and watched items for a full catalog of your watch history
 
-2. Start the app
+## Key Features
 
-   ```bash
-   npx expo start
-   ```
+- Search movies and TV shows with optional filters (narrow down the search to Movies or Shows)
+- Home page shows trending lists for quick discovery; filter between trending shows or movies
+- Detail screen with:
+  - Poster, title, year, runtime, rating, genres
+  - Overview
+  - Seasons list (for Shows)
+  - Cast list
+  - Watch providers (SE region)
+- Library management:
+  - Save/remove items
+  - Pin up to 3 items per media type
+  - Toggle watched status (watched items are auto-unpinned)
+- UX:
+  - Loading states via context
+  - Haptic feedback on button presses and on success or error
 
-In the output, you'll find options to open the app in a
+Screenshots (replace with real images):
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+![Home](https://via.placeholder.com/900x500?text=Home+Screen)
+![Details](https://via.placeholder.com/900x500?text=Details+Screen)
+![Search](https://via.placeholder.com/900x500?text=Search+Screen)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Tech Stack
 
-## Get a fresh project
+- React Native 0.81 + Expo 54
+- expo-router for file-based navigation
+- Expo Native Tabs
+- SQLite persistence via expo-sqlite
+- TMDB API for media data
 
-When you're ready, run:
+## Quick Start
+
+Prerequisites:
+
+- Node.js LTS
+- iOS Simulator / Android Emulator, or the Expo Go app
+
+1. Install dependencies:
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. Configure environment (see “## Configuration”)
 
-## Learn more
+3. Start the app (interactive dev server):
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+npm start
+# or
+npx expo start
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+4. Run on a device:
 
-## Join the community
+```bash
+# iOS Simulator
+npm run ios
 
-Join our community of developers creating universal apps.
+# Android Emulator
+npm run android
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+# Web
+npm run web
+```
+
+## Configuration
+
+This app uses the TMDB API. You must provide a bearer token via environment variables.
+
+Environment variables used:
+
+- `EXPO_PUBLIC_TMDB_TOKEN` — TMDB Read Access Token (v4 auth, Bearer)
+- Example can be viewed in the `.env.example` file
+
+Example `.env` (create at the repo root):
+
+```
+EXPO_PUBLIC_TMDB_TOKEN=<YOUR_TMDB_BEARER_TOKEN>
+```
+
+Notes:
+
+- The watch providers region is currently set to “SE” (Sweden). To change it, edit `getProviders` in `app/api/tmdb.js`.
+
+## Usage
+
+- Search:
+  - Enter a query; optionally toggle “Movies” or “Shows”; then submit.
+- Save to library:
+  - On the Details screen, tap “Save to Library.” Toggling pinned or watched will auto-save if needed.
+- Pinning:
+  - Tap the bookmark icon at the top of the details screen. You can pin up to 3 items per media type.
+- Mark watched:
+  - Tap “Toggle Watched.” Watched items are automatically unpinned.
+- Library:
+  - Switch between watchlist and watched by tapping the buttons above saved items.
+
+## License
+
+For educational purposes only.
+
+## Contact
+
+Created by Jacob Asker  
+Email: jacob.asker@icloud.com
+
+---
