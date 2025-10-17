@@ -62,9 +62,9 @@ export async function getTrendingMovies() {
     );
     const json = await response.json();
 
-    const trendingMovies = json.results.map((movie) =>
-      mapDetails(movie, "movie")
-    ); // Map each item from the trending movies to get only the necessary fields
+    const trendingMovies = json.results.map(
+      (movie) => mapDetails(movie, "movie") // Map each item from the trending movies to get only the necessary fields
+    ); 
 
     return trendingMovies;
   } catch (error) {
@@ -111,7 +111,7 @@ export async function getCast(tmdb_id, media_type) {
       options
     );
     const json = await response.json();
-    const items = json.cast.map((item) => mapCast(item, media_type));
+    const items = json.cast.map((item) => mapCast(item, media_type)); // Map each cast item
     return items;
   } catch (error) {
     console.error(`Error: ${error.message}`);
@@ -136,19 +136,19 @@ export async function getProviders(tmdb_id, media_type) {
     
     const streamProviders =
       swedenProviders.flatrate?.map((item) => ({
-        ...mapProviders(item),
-        type: "stream",
+        ...mapProviders(item), // Map each provider item for type "stream"
+        type: "stream", 
       })) || [];
 
     const buyProviders =
       swedenProviders.buy?.map((item) => ({
-        ...mapProviders(item),
+        ...mapProviders(item), // Map each provider item for type "buy"
         type: "buy",
       })) || [];
 
     const rentProviders =
       swedenProviders.rent?.map((item) => ({
-        ...mapProviders(item),
+        ...mapProviders(item), // Map each provider item for type "rent"
         type: "rent",
       })) || [];
 
@@ -159,6 +159,6 @@ export async function getProviders(tmdb_id, media_type) {
     };
   } catch (error) {
     console.error(`Error: ${error.message}`);
-    return { stream: [], buy: [], rent: [] }; // Return empty arrays on error
+    return { stream: [], buy: [], rent: [] }; 
   }
 }

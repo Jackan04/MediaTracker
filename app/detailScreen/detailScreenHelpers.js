@@ -1,6 +1,9 @@
 import * as Haptics from "expo-haptics";
 import { Alert, Linking } from "react-native";
 
+// Helper functions imported from DetailScreen.jsx
+// Implementation assisted by AI
+
 import {
   deleteItem,
   insertItem,
@@ -58,6 +61,8 @@ export const createHandleDelete = (
     );
   };
 };
+
+
 
 export const createHandleSave = (item, updateSavedStatus, refreshWatchList) => {
   return async () => {
