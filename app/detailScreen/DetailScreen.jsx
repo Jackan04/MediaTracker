@@ -78,7 +78,8 @@ export default function DetailScreen() {
     getStates();
   }, [item]);
 
-  // Handler functions from "detailScreenHelper.js"
+  // Handler functions from "detailScreenHelper.js" 
+  // Created with AI assistance to implement this solution
   const handleSave = createHandleSave(
     item,
     updateSavedStatus,
@@ -140,7 +141,7 @@ export default function DetailScreen() {
           icon="arrow-back"
           onPress={() => router.back()}
         ></Button>
-        <View style={{flexDirection:"row", gap: SIZES.sm}}>
+        <View style={{ flexDirection: "row", gap: SIZES.sm }}>
           <Button text="TMDB" onPress={OpenUrl(item.homepage)}></Button>
           <Button
             icon={pinnedStatus[item.tmdb_id] ? "bookmark" : "bookmark-outline"}
